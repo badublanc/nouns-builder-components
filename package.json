@@ -1,0 +1,24 @@
+{
+	"license": "MIT",
+	"name": "@badublanc/builder-hooks",
+	"version": "0.1.0",
+	"type": "module",
+	"main": "./index.js",
+	"scripts": {
+		"watch": "tsc --watch",
+		"build": "tsc && cp ./package.json ./dist/package.json"
+	},
+	"devDependencies": {
+		"@types/node": "^18.11.18",
+		"@types/react": "^18.0.26",
+		"ethers": "^5.7.2",
+		"react": "^18.2.0",
+		"tsup": "^6.5.0",
+		"wagmi": "^0.10.10"
+	},
+	"peerDependencies": {
+		"ethers": "^5.7.2",
+		"react": "^18.2.0",
+		"wagmi": "^0.10.10"
+	}
+}
