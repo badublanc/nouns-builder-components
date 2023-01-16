@@ -1,7 +1,11 @@
 import { useContractWrite, usePrepareContractWrite } from 'wagmi';
 import { AuctionABI } from '../abis';
 
-const useSettleAuction = ({ address }: { address: string }) => {
+interface UseSettleAuctionConfig {
+	address: string;
+}
+
+export const useSettleAuction = ({ address }: UseSettleAuctionConfig) => {
 	const { config } = usePrepareContractWrite({
 		address: address as `0x${string}`,
 		abi: AuctionABI,
@@ -14,5 +18,3 @@ const useSettleAuction = ({ address }: { address: string }) => {
 
 	return { settleAuction };
 };
-
-export default useSettleAuction;

@@ -2,7 +2,9 @@ import { useEffect, useState } from 'react';
 import { useContractReads } from 'wagmi';
 import { GovernorABI, TokenABI } from '../abis';
 
-const useDao = (governorContract: string) => {
+interface UseDaoConfig {}
+
+export const useDao = (governorContract: string) => {
 	const [governor, setGovernor] = useState<string>('');
 	const [token, setToken] = useState<string>('');
 	const [treasury, setTreasury] = useState<string>('');
@@ -82,5 +84,3 @@ const useDao = (governorContract: string) => {
 
 	return { name, addresses: { governor, token, auction, treasury, metadata } };
 };
-
-export default useDao;

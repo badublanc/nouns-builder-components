@@ -6,37 +6,39 @@ const zeroUnits = {
 	seconds: 0,
 };
 
-type Props = {
+interface UseCountdownConfig {
 	deadline: number;
-};
+}
 
-const useCountdown = ({ deadline }: Props) => {
+export const useCountdown = ({ deadline }: UseCountdownConfig) => {
 	const [isActive, setIsActive] = useState<boolean>(false);
-	const [units, setUnits] = useState(zeroUnits);
+	const [timeUnits, setTimeUnits] = useState(zeroUnits);
 	const [countdown, setCountdown] = useState<string>('00h 00m 00s');
 
 	useEffect(() => {
 		const interval = setInterval(() => {
 			const secondsLeft = deadline - Math.floor(Date.now() / 1000);
 			if (secondsLeft >= 0) {
-				if (!isActive) setIsActive(true);
+				setIsActive(true);
 				const timer = parseTimeLeft(secondsLeft);
 				setCountdown(timer.countdown);
-				setUnits(timer.units);
+				setTimeUnits(timer.units);
 			} else {
 				clearInterval(interval);
 				setCountdown('00h 00m 00s');
 				setIsActive(false);
+				setTimeUnits(zeroUnits);
 			}
 		}, 1000);
 
 		return () => {
 			clearInterval(interval);
 			setIsActive(false);
+			setTimeUnits(zeroUnits);
 		};
 	}, [deadline]);
 
-	return { countdown, isActive, units };
+	return { countdown, isActive, timeUnits };
 };
 
 const parseTimeLeft = (seconds: number) => {
@@ -72,5 +74,3 @@ const parseTimeLeft = (seconds: number) => {
 
 	return { countdown: formatted, units: relative };
 };
-
-export default useCountdown;

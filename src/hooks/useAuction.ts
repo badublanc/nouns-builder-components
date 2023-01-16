@@ -1,9 +1,11 @@
 import { useState } from 'react';
-import { useContractRead } from 'wagmi';
-import { utils } from 'ethers';
+import { useContractEvent, useContractRead } from 'wagmi';
+import { constants, utils } from 'ethers';
 import { AuctionABI } from '../abis';
 
-const useAuction = (address: string) => {
+interface UseAuctionConfig {}
+
+export const useAuction = (address: string) => {
 	const [tokenId, setTokenId] = useState<number>(0);
 	const [highestBid, setHighestBid] = useState<string>('');
 	const [highestBidder, setHighestBidder] = useState<string>('');
@@ -15,7 +17,7 @@ const useAuction = (address: string) => {
 		address: address as `0x${string}`,
 		abi: AuctionABI,
 		functionName: 'auction',
-		watch: true,
+		// watch: true,
 		onSuccess(data) {
 			// console.log(data);
 			setTokenId(data.tokenId.toNumber());
@@ -36,7 +38,31 @@ const useAuction = (address: string) => {
 		},
 	});
 
+	useContractEvent({
+		address: address as `0x${string}`,
+		abi: AuctionABI,
+		eventName: 'AuctionBid',
+		listener(args_0, args_1, args_2, args_3, args_4) {
+			setTokenId(args_0.toNumber());
+			setHighestBidder(args_1);
+			setHighestBid(utils.formatEther(args_2));
+			if (args_3) setEndTime(args_4.toNumber());
+		},
+	});
+
+	useContractEvent({
+		address: address as `0x${string}`,
+		abi: AuctionABI,
+		eventName: 'AuctionCreated',
+		listener(args_0, args_1, args_2) {
+			setTokenId(args_0.toNumber());
+			setStartTime(args_1.toNumber());
+			setEndTime(args_2.toNumber());
+			setSettled(false);
+			setHighestBid(utils.formatEther('0'));
+			setHighestBidder(constants.AddressZero);
+		},
+	});
+
 	return { tokenId, highestBid, highestBidder, startTime, endTime, settled };
 };
-
-export default useAuction;

@@ -1,36 +1,54 @@
-import { BigNumberish } from 'ethers';
-import { formatUnits, parseUnits } from 'ethers/lib/utils.js';
+import { BigNumber, BigNumberish } from 'ethers';
+import { formatUnits, parseEther, parseUnits } from 'ethers/lib/utils.js';
 import { useEffect, useState } from 'react';
-import { useContractRead } from 'wagmi';
+import { useContractReads } from 'wagmi';
 import AuctionABI from '../abis/auction';
 
-type Props = {
-	amount: string;
+interface UseBidFormInputConfig {
+	currentBid: string;
 	address: string;
-};
+}
 
-const useBidFormInput = ({ amount, address }: Props) => {
+export const useBidFormInput = ({
+	currentBid,
+	address,
+}: UseBidFormInputConfig) => {
 	const [value, setValue] = useState('');
-	const [minBid, setMinBid] = useState<BigNumberish | null>();
+	const [reservePrice, setReservePrice] = useState<BigNumberish>(
+		parseEther('0.0001')
+	);
+	const [minBid, setMinBid] = useState<BigNumberish>();
 	const [minBidPct, setMinBidPct] = useState<BigNumberish>();
 	const [placeholder, setPlaceholder] = useState<string>('Bid amount');
 
-	useContractRead({
-		address: address as `0x${string}`,
-		abi: AuctionABI,
-		functionName: 'minBidIncrement',
+	useContractReads({
+		contracts: [
+			{
+				address: address as `0x${string}`,
+				abi: AuctionABI,
+				functionName: 'minBidIncrement',
+			},
+			{
+				address: address as `0x${string}`,
+				abi: AuctionABI,
+				functionName: 'reservePrice',
+			},
+		],
 		onSuccess(data) {
-			setMinBidPct(data);
+			setMinBidPct(data[0]);
+			if (data[1]) setReservePrice(data[1]);
 		},
 	});
 
 	useEffect(() => {
-		if (amount && minBidPct) {
-			const currentBid = parseUnits(amount, 'ether');
-			setMinBid(currentBid.add(currentBid.div(minBidPct)));
-		} else setMinBid(null);
-		return () => setMinBid(null);
-	}, [amount, minBidPct]);
+		if (currentBid) {
+			const bid = parseEther(currentBid);
+			if (bid.gt(BigNumber.from('0')) && minBidPct) {
+				setMinBid(bid.add(bid.div(minBidPct)));
+			} else setMinBid(reservePrice);
+		} else setMinBid(reservePrice);
+		return () => setMinBid(reservePrice);
+	}, [currentBid, minBidPct, reservePrice]);
 
 	useEffect(() => {
 		if (minBid) setPlaceholder(`${formatUnits(minBid)} or more`);
@@ -47,11 +65,9 @@ const useBidFormInput = ({ amount, address }: Props) => {
 			value,
 			placeholder,
 			min: minBid ? formatUnits(minBid) : '',
-			step: '0.001',
+			step: 'any',
 			type: 'number',
 			onChange: handleChange,
 		},
 	};
 };
-
-export default useBidFormInput;

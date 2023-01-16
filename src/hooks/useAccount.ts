@@ -1,15 +1,15 @@
 import type { Provider } from '@wagmi/core';
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useProvider } from 'wagmi';
+import { truncateAddress } from '../utils';
 
-type Props = {
-	address: string;
-};
+interface UseAccountConfig {}
 
-const useBidder = ({ address }: Props) => {
+export function useAccount(address: string) {
 	const provider = useProvider();
 	const [ens, setEns] = useState<string>('');
 	const [avatar, setAvatar] = useState<string>('');
+	const [shortAddress, setShortAddress] = useState<string>('');
 
 	useEffect(() => {
 		const getEns = async (address: string, provider: Provider) => {
@@ -20,6 +20,8 @@ const useBidder = ({ address }: Props) => {
 
 		if (address) getEns(address, provider);
 		else setEns('');
+
+		return () => setEns('');
 	}, [address, provider]);
 
 	useEffect(() => {
@@ -31,15 +33,21 @@ const useBidder = ({ address }: Props) => {
 
 		if (ens) getAvatar(ens, provider);
 		else setAvatar('');
+
+		return () => setAvatar('');
 	}, [ens, provider]);
 
-	return { bidder: ens || truncateAddress(address), avatar };
-};
+	useEffect(() => {
+		if (address) setShortAddress(truncateAddress(address));
+		else setShortAddress('');
 
-const truncateAddress = (address: string) => {
-	return (
-		address.substring(0, 6) + '...' + address.substring(address.length - 4)
-	);
-};
+		return () => setShortAddress('');
+	}, [address]);
 
-export default useBidder;
+	return {
+		displayName: ens || shortAddress,
+		address,
+		shortAddress,
+		avatar,
+	};
+}

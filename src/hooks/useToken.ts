@@ -3,12 +3,12 @@ import { useEffect, useState } from 'react';
 import { useContract, useProvider } from 'wagmi';
 import { TokenABI } from '../abis';
 
-type Props = {
+interface UseTokenConfig {
 	id: number;
 	address: string;
-};
+}
 
-const useToken = ({ id, address }: Props) => {
+export const useToken = ({ id, address }: UseTokenConfig) => {
 	const provider = useProvider();
 	const [imageUrl, setImageUrl] = useState('');
 
@@ -39,5 +39,3 @@ const useToken = ({ id, address }: Props) => {
 
 	return { id, imageUrl };
 };
-
-export default useToken;
