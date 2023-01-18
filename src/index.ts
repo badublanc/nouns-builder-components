@@ -7,4 +7,6 @@ export {
 	useDao,
 	useSettleAuction,
 	useToken,
+	useProposal,
+	useProposalList,
 } from './hooks';
