@@ -4,12 +4,12 @@ import { useState, useEffect } from 'react';
 import { useProvider } from 'wagmi';
 import { truncateAddress } from '../utils';
 
-interface UseAccountConfig {
+interface UseAddressConfig {
 	address: string;
 	network?: Network;
 }
 
-export function useAccount({ address, network = 'mainnet' }: UseAccountConfig) {
+export function useAddress({ address, network = 'mainnet' }: UseAddressConfig) {
 	const provider = useProvider();
 	const [ens, setEns] = useState<string>('');
 	const [avatar, setAvatar] = useState<string>('');

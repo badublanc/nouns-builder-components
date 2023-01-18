@@ -1,4 +1,4 @@
-export { useAccount } from './useAccount';
+export { useAddress } from './useAddress';
 export { useDao } from './useDao';
 export { useToken } from './useToken';
 export { useProposal, useProposalList } from './proposals';
