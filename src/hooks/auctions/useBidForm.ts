@@ -1,21 +1,25 @@
-import { usePrepareContractWrite, useContractWrite, useSigner } from 'wagmi';
-import { parseEther } from 'ethers/lib/utils.js';
-import { BigNumber } from 'ethers';
-import { AuctionABI } from '../abis';
+import type { Network } from '../../types';
+import { usePrepareContractWrite, useContractWrite } from 'wagmi';
 import { useEffect, useState } from 'react';
+import { BigNumber, utils } from 'ethers';
+import { AuctionABI } from '../../abis';
+import { getChainIdFromNetwork } from '../../utils';
+const { parseEther } = utils;
 
 interface UseBidFormConfig {
 	tokenId: number;
-	amount: string;
-	address: string;
-	min: string;
+	bidAmount: string;
+	minBid: string;
+	auctionAddress: string;
+	network?: Network;
 }
 
 export const useBidForm = ({
 	tokenId,
-	amount,
-	address,
-	min,
+	bidAmount,
+	auctionAddress,
+	minBid,
+	network = 'mainnet',
 }: UseBidFormConfig) => {
 	const [isValidBid, setIsValidBid] = useState<boolean>(false);
 	const parseTokenId = (id: number) => {
@@ -24,13 +28,14 @@ export const useBidForm = ({
 	};
 
 	const { config, error } = usePrepareContractWrite({
-		address: address as `0x${string}`,
+		address: auctionAddress as `0x${string}`,
+		chainId: getChainIdFromNetwork(network),
 		abi: AuctionABI,
 		functionName: 'createBid',
 		args: [parseTokenId(tokenId)],
 		enabled: isValidBid,
 		overrides: {
-			value: parseEther(amount || '0'),
+			value: parseEther(bidAmount || '0'),
 		},
 		onError(err) {
 			console.error(err);
@@ -40,15 +45,15 @@ export const useBidForm = ({
 	const { data, isLoading, isSuccess, write } = useContractWrite(config);
 
 	useEffect(() => {
-		if (tokenId && amount && min) {
+		if (tokenId && bidAmount && minBid) {
 			const isValidToken = Number.isInteger(tokenId) && tokenId >= 0;
-			const isValidBidAmount = parseEther(amount).gte(parseEther(min));
+			const isValidBidAmount = parseEther(bidAmount).gte(parseEther(minBid));
 			if (isValidToken && isValidBidAmount) setIsValidBid(true);
 			else setIsValidBid(false);
 		} else setIsValidBid(false);
 
 		return () => setIsValidBid(false);
-	}, [tokenId, amount, min]);
+	}, [tokenId, bidAmount, minBid]);
 
 	const handleSubmit = (event: any) => {
 		event.preventDefault();

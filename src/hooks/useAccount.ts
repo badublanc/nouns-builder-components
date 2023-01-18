@@ -1,11 +1,15 @@
+import type { Network } from '../types';
 import type { Provider } from '@wagmi/core';
 import { useState, useEffect } from 'react';
 import { useProvider } from 'wagmi';
 import { truncateAddress } from '../utils';
 
-interface UseAccountConfig {}
+interface UseAccountConfig {
+	address: string;
+	network?: Network;
+}
 
-export function useAccount(address: string) {
+export function useAccount({ address, network = 'mainnet' }: UseAccountConfig) {
 	const provider = useProvider();
 	const [ens, setEns] = useState<string>('');
 	const [avatar, setAvatar] = useState<string>('');

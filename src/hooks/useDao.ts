@@ -1,86 +1,107 @@
+import type { Network } from '../types';
 import { useEffect, useState } from 'react';
 import { useContractReads } from 'wagmi';
 import { GovernorABI, TokenABI } from '../abis';
+import { getChainIdFromNetwork } from '../utils';
 
-interface UseDaoConfig {}
+interface UseDaoConfig {
+	governorAddress: string;
+	network?: Network;
+}
 
-export const useDao = (governorContract: string) => {
-	const [governor, setGovernor] = useState<string>('');
-	const [token, setToken] = useState<string>('');
-	const [treasury, setTreasury] = useState<string>('');
-	const [auction, setAuction] = useState<string>('');
-	const [metadata, setMetadata] = useState<string>('');
+export const useDao = ({
+	governorAddress,
+	network = 'mainnet',
+}: UseDaoConfig) => {
+	const [tokenAddress, setTokenAddress] = useState<string>('');
+	const [treasuryAddress, setTreasuryAddress] = useState<string>('');
+	const [auctionAddress, setAuctionAddress] = useState<string>('');
+	const [metadataAddress, setMetadataAddress] = useState<string>('');
 	const [name, setName] = useState<string>('');
 
-	useEffect(() => {
-		if (governorContract) setGovernor(governorContract);
+	const resetValues = () => {
+		setTokenAddress('');
+		setTreasuryAddress('');
+		setAuctionAddress('');
+		setMetadataAddress('');
+		setName('');
+	};
 
-		return () => {
-			setGovernor('');
-			setToken('');
-			setTreasury('');
-			setAuction('');
-			setMetadata('');
-			setName('');
-		};
-	}, [governorContract]);
+	useEffect(() => {
+		if (!governorAddress) resetValues();
+		return () => resetValues();
+	}, [governorAddress]);
 
 	useContractReads({
 		contracts: [
 			{
-				address: governor as `0x${string}`,
+				address: governorAddress as `0x${string}`,
+				chainId: getChainIdFromNetwork(network),
 				abi: GovernorABI,
 				functionName: 'token',
 			},
 			{
-				address: governor as `0x${string}`,
+				address: governorAddress as `0x${string}`,
+				chainId: getChainIdFromNetwork(network),
 				abi: GovernorABI,
 				functionName: 'treasury',
 			},
 		],
-		enabled: Boolean(governor),
+		enabled: Boolean(governorAddress),
 		onSuccess(data) {
-			setToken(data[0]);
-			setTreasury(data[1]);
+			setTokenAddress(data[0]);
+			setTreasuryAddress(data[1]);
 		},
 		onError(err) {
 			console.error(err);
-			setToken('');
-			setTreasury('');
+			setTokenAddress('');
+			setTreasuryAddress('');
 		},
 	});
 
 	useContractReads({
 		contracts: [
 			{
-				address: token as `0x${string}`,
+				address: tokenAddress as `0x${string}`,
+				chainId: getChainIdFromNetwork(network),
 				abi: TokenABI,
 				functionName: 'auction',
 			},
 			{
-				address: token as `0x${string}`,
+				address: tokenAddress as `0x${string}`,
+				chainId: getChainIdFromNetwork(network),
 				abi: TokenABI,
 				functionName: 'metadataRenderer',
 			},
 			{
-				address: token as `0x${string}`,
+				address: tokenAddress as `0x${string}`,
+				chainId: getChainIdFromNetwork(network),
 				abi: TokenABI,
 				functionName: 'name',
 			},
 		],
-		enabled: Boolean(token),
+		enabled: Boolean(tokenAddress),
 		onSuccess(data) {
-			setAuction(data[0]);
-			setMetadata(data[1]);
+			setAuctionAddress(data[0]);
+			setMetadataAddress(data[1]);
 			setName(data[2]);
 		},
 		onError(err) {
 			console.error(err);
-			setAuction('');
-			setMetadata('');
+			setAuctionAddress('');
+			setMetadataAddress('');
 			setName('');
 		},
 	});
 
-	return { name, addresses: { governor, token, auction, treasury, metadata } };
+	return {
+		dao: {
+			name,
+		},
+		governorAddress,
+		tokenAddress,
+		treasuryAddress,
+		auctionAddress,
+		metadataAddress,
+	};
 };

@@ -1,3 +1,4 @@
+import type { Network } from '../types';
 import { BigNumber } from 'ethers';
 import { useEffect, useState } from 'react';
 import { useContract, useProvider } from 'wagmi';
@@ -5,15 +6,20 @@ import { TokenABI } from '../abis';
 
 interface UseTokenConfig {
 	id: number;
-	address: string;
+	tokenAddress: string;
+	network?: Network;
 }
 
-export const useToken = ({ id, address }: UseTokenConfig) => {
+export const useToken = ({
+	id,
+	tokenAddress,
+	network = 'mainnet',
+}: UseTokenConfig) => {
 	const provider = useProvider();
 	const [imageUrl, setImageUrl] = useState('');
 
 	const contract = useContract({
-		address: address as `0x${string}`,
+		address: tokenAddress as `0x${string}`,
 		abi: TokenABI,
 		signerOrProvider: provider,
 	});

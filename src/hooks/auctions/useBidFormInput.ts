@@ -1,17 +1,21 @@
-import { BigNumber, BigNumberish } from 'ethers';
-import { formatUnits, parseEther, parseUnits } from 'ethers/lib/utils.js';
+import type { Network } from '../../types';
+import { utils, BigNumber, type BigNumberish } from 'ethers';
 import { useEffect, useState } from 'react';
 import { useContractReads } from 'wagmi';
-import AuctionABI from '../abis/auction';
+import AuctionABI from '../../abis/auction';
+import { getChainIdFromNetwork } from '../../utils';
+const { formatEther, parseEther } = utils;
 
 interface UseBidFormInputConfig {
 	currentBid: string;
-	address: string;
+	auctionAddress: string;
+	network?: Network;
 }
 
 export const useBidFormInput = ({
 	currentBid,
-	address,
+	auctionAddress,
+	network = 'mainnet',
 }: UseBidFormInputConfig) => {
 	const [value, setValue] = useState('');
 	const [reservePrice, setReservePrice] = useState<BigNumberish>(
@@ -24,12 +28,14 @@ export const useBidFormInput = ({
 	useContractReads({
 		contracts: [
 			{
-				address: address as `0x${string}`,
+				address: auctionAddress as `0x${string}`,
+				chainId: getChainIdFromNetwork(network),
 				abi: AuctionABI,
 				functionName: 'minBidIncrement',
 			},
 			{
-				address: address as `0x${string}`,
+				address: auctionAddress as `0x${string}`,
+				chainId: getChainIdFromNetwork(network),
 				abi: AuctionABI,
 				functionName: 'reservePrice',
 			},
@@ -51,7 +57,7 @@ export const useBidFormInput = ({
 	}, [currentBid, minBidPct, reservePrice]);
 
 	useEffect(() => {
-		if (minBid) setPlaceholder(`${formatUnits(minBid)} or more`);
+		if (minBid) setPlaceholder(`${formatEther(minBid)} or more`);
 		else setPlaceholder('Bid amount');
 		return () => setPlaceholder('Bid amount');
 	}, [minBid]);
@@ -64,7 +70,7 @@ export const useBidFormInput = ({
 		attributes: {
 			value,
 			placeholder,
-			min: minBid ? formatUnits(minBid) : '',
+			min: minBid ? formatEther(minBid) : '',
 			step: 'any',
 			type: 'number',
 			onChange: handleChange,

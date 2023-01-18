@@ -1,11 +1,19 @@
+import type { Network } from '../../types';
 import { useState } from 'react';
 import { useContractEvent, useContractRead } from 'wagmi';
 import { constants, utils } from 'ethers';
-import { AuctionABI } from '../abis';
+import { AuctionABI } from '../../abis';
+import { getChainIdFromNetwork } from '../../utils';
 
-interface UseAuctionConfig {}
+interface UseAuctionConfig {
+	auctionAddress: string;
+	network?: Network;
+}
 
-export const useAuction = (address: string) => {
+export const useAuction = ({
+	auctionAddress,
+	network = 'mainnet',
+}: UseAuctionConfig) => {
 	const [tokenId, setTokenId] = useState<number>(0);
 	const [highestBid, setHighestBid] = useState<string>('');
 	const [highestBidder, setHighestBidder] = useState<string>('');
@@ -14,7 +22,8 @@ export const useAuction = (address: string) => {
 	const [settled, setSettled] = useState<boolean>(false);
 
 	useContractRead({
-		address: address as `0x${string}`,
+		address: auctionAddress as `0x${string}`,
+		chainId: getChainIdFromNetwork(network),
 		abi: AuctionABI,
 		functionName: 'auction',
 		// watch: true,
@@ -39,25 +48,27 @@ export const useAuction = (address: string) => {
 	});
 
 	useContractEvent({
-		address: address as `0x${string}`,
+		address: auctionAddress as `0x${string}`,
+		chainId: getChainIdFromNetwork(network),
 		abi: AuctionABI,
 		eventName: 'AuctionBid',
-		listener(args_0, args_1, args_2, args_3, args_4) {
-			setTokenId(args_0.toNumber());
-			setHighestBidder(args_1);
-			setHighestBid(utils.formatEther(args_2));
-			if (args_3) setEndTime(args_4.toNumber());
+		listener(tokenId, bidder, bid, extended, endTime) {
+			setTokenId(tokenId.toNumber());
+			setHighestBidder(bidder);
+			setHighestBid(utils.formatEther(bid));
+			if (extended) setEndTime(endTime.toNumber());
 		},
 	});
 
 	useContractEvent({
-		address: address as `0x${string}`,
+		address: auctionAddress as `0x${string}`,
+		chainId: getChainIdFromNetwork(network),
 		abi: AuctionABI,
 		eventName: 'AuctionCreated',
-		listener(args_0, args_1, args_2) {
-			setTokenId(args_0.toNumber());
-			setStartTime(args_1.toNumber());
-			setEndTime(args_2.toNumber());
+		listener(tokenId, startTime, endTime) {
+			setTokenId(tokenId.toNumber());
+			setStartTime(startTime.toNumber());
+			setEndTime(endTime.toNumber());
 			setSettled(false);
 			setHighestBid(utils.formatEther('0'));
 			setHighestBidder(constants.AddressZero);
