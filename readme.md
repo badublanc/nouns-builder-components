@@ -94,6 +94,37 @@ type UseAddressConfig = {
 };
 ```
 
+Returns
+
+```ts
+{
+	displayName: string, // ens or shortAddress
+	address: string,
+	shortAddress: string, // eg: 0x1234...6789
+	avatar: string
+}
+```
+
+Usage
+
+```ts
+import { useAddress } from '@badublanc/builder-hooks';
+
+export default function App() {
+  const myAddress = '0x4DA67068FD02F2abCdC5A09cE7b4dD28C31d8C97';
+  const { displayName, avatar } = useAddress({ address: myAddress });
+
+  return (
+    <div>
+      {avatar && (
+        <img src={avatar} alt="avatar" style={{ width: 100, height: 100 }} />
+      )}
+      {displayName && <p>{displayName}</p>}
+    </div>
+  );
+}
+```
+
 ### 🪝 `useAuction`
 
 Hook for fetching data about the current, or most recent, auction for a DAO.
