@@ -4,7 +4,7 @@ A collection of React hooks to kickstart development for your DAO. Supports DAOs
 
 Note: this library is under active development. Things will change and possibly break.
 
-## Installation
+## 🛠️ Installation
 
 ```bash
 # npm
@@ -14,7 +14,7 @@ npm i @badublanc/builder-hooks wagmi ethers
 yarn add @badublanc/builder-hooks wagmi ethers
 ```
 
-## Quick start
+## ⚡️ Quick start
 
 Configure the wagmi client and wrap your app with `WagmiConfig`. Further instructions can be found at [wagmi.sh](https://wagmi.sh/react/getting-started).
 
@@ -75,9 +75,9 @@ export default function App() {
 }
 ```
 
-## Hooks
+## 🔱 Hooks
 
-### `useAddress`
+### 🪝 `useAddress`
 
 Hook for fetching ENS name and avatar for an address.
 
@@ -94,7 +94,7 @@ type UseAddressConfig = {
 };
 ```
 
-### `useAuction`
+### 🪝 `useAuction`
 
 Hook for fetching data about the current, or most recent, auction for a DAO.
 
@@ -111,7 +111,7 @@ type UseAuctionConfig = {
 };
 ```
 
-### `useBidForm`
+### 🪝 `useBidForm`
 
 Hook for handling form submissions for auction bids.
 
@@ -131,7 +131,7 @@ type UseBidFormConfig = {
 };
 ```
 
-### `useBidFormInput`
+### 🪝 `useBidFormInput`
 
 Hook for handling inputs for auction bids.
 
@@ -149,7 +149,7 @@ type UseBidFormInputConfig = {
 };
 ```
 
-### `useCountdown`
+### 🪝 `useCountdown`
 
 Hook for tracking remaining time in an auction.
 
@@ -165,7 +165,7 @@ type UseCountdownConfig = {
 };
 ```
 
-### `useDao`
+### 🪝 `useDao`
 
 Hook for fetching on-chain DAO metadata and contract addresses.
 
@@ -182,7 +182,7 @@ type UseDaoConfig = {
 };
 ```
 
-### `useProposal`
+### 🪝 `useProposal`
 
 Hook for fetching data for a proposal.
 
@@ -200,7 +200,7 @@ type UseProposalConfig = {
 };
 ```
 
-### `useProposalList`
+### 🪝 `useProposalList`
 
 Hook for fetching a basic list of a DAO's proposals.
 
@@ -218,7 +218,7 @@ type UseProposalListConfig = {
 };
 ```
 
-### `useSettleAuction`
+### 🪝 `useSettleAuction`
 
 Hook for submitting a transaction to settle an auction and starting the next one.
 
@@ -235,7 +235,7 @@ type UseSettleAuctionConfig = {
 };
 ```
 
-### `useToken`
+### 🪝 `useToken`
 
 Hook for fetching data for a token in the DAO collection.
 
