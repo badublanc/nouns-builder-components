@@ -85,7 +85,7 @@ Hook for fetching ENS name and avatar for an address.
 import { useAddress } from '@badublanc/builder-hooks';
 ```
 
-Configuration
+⚙️ Configuration
 
 ```ts
 type UseAddressConfig = {
@@ -94,7 +94,7 @@ type UseAddressConfig = {
 };
 ```
 
-Returns
+↩️ Returns
 
 ```ts
 {
@@ -105,9 +105,9 @@ Returns
 }
 ```
 
-Usage
+📝 Usage
 
-```ts
+```tsx
 import { useAddress } from '@badublanc/builder-hooks';
 
 export default function App() {
@@ -133,13 +133,34 @@ Hook for fetching data about the current, or most recent, auction for a DAO.
 import { useAuction } from '@badublanc/builder-hooks';
 ```
 
-Configuration
+⚙️ Configuration
 
 ```ts
 type UseAuctionConfig = {
   auctionAddress: string; // address for DAO auction house contract
   network?: 'mainnet' | 'goerli'; // default: 'mainnet'
 };
+```
+
+↩️ Returns
+
+```ts
+{
+
+}
+```
+
+📝 Usage
+
+```tsx
+import { useAuction } from '@badublanc/builder-hooks';
+
+export default function App() {
+  return (
+    <div>
+    </div>
+  );
+}
 ```
 
 ### 🪝 `useBidForm`
@@ -150,7 +171,7 @@ Hook for handling form submissions for auction bids.
 import { useBidForm } from '@badublanc/builder-hooks';
 ```
 
-Configuration
+⚙️ Configuration
 
 ```ts
 type UseBidFormConfig = {
@@ -162,6 +183,27 @@ type UseBidFormConfig = {
 };
 ```
 
+↩️ Returns
+
+```ts
+{
+
+}
+```
+
+📝 Usage
+
+```tsx
+import { useBidForm, useBidFormInput } from '@badublanc/builder-hooks';
+
+export default function App() {
+  return (
+    <div>
+    </div>
+  );
+}
+```
+
 ### 🪝 `useBidFormInput`
 
 Hook for handling inputs for auction bids.
@@ -170,7 +212,7 @@ Hook for handling inputs for auction bids.
 import { useBidFormInput } from '@badublanc/builder-hooks';
 ```
 
-Configuration
+⚙️ Configuration
 
 ```ts
 type UseBidFormInputConfig = {
@@ -178,6 +220,27 @@ type UseBidFormInputConfig = {
   auctionAddress: string; // address for DAO auction house contract
   network?: 'mainnet' | 'goerli'; // default: 'mainnet'
 };
+```
+
+↩️ Returns
+
+```ts
+{
+
+}
+```
+
+📝 Usage
+
+```tsx
+import { useBidForm, useBidFormInput } from '@badublanc/builder-hooks';
+
+export default function App() {
+  return (
+    <div>
+    </div>
+  );
+}
 ```
 
 ### 🪝 `useCountdown`
@@ -188,12 +251,33 @@ Hook for tracking remaining time in an auction.
 import { useCountdown } from '@badublanc/builder-hooks';
 ```
 
-Configuration
+⚙️ Configuration
 
 ```ts
 type UseCountdownConfig = {
   deadline: number; // timestamp
 };
+```
+
+↩️ Returns
+
+```ts
+{
+
+}
+```
+
+📝 Usage
+
+```tsx
+import { useCountdown } from '@badublanc/builder-hooks';
+
+export default function App() {
+  return (
+    <div>
+    </div>
+  );
+}
 ```
 
 ### 🪝 `useDao`
@@ -204,13 +288,34 @@ Hook for fetching on-chain DAO metadata and contract addresses.
 import { useDao } from '@badublanc/builder-hooks';
 ```
 
-Configuration
+⚙️ Configuration
 
 ```ts
 type UseDaoConfig = {
   governorAddress: string; // address for DAO governor contract
   network?: 'mainnet' | 'goerli'; // default: 'mainnet'
 };
+```
+
+↩️ Returns
+
+```ts
+{
+
+}
+```
+
+📝 Usage
+
+```tsx
+import { useDao } from '@badublanc/builder-hooks';
+
+export default function App() {
+  return (
+    <div>
+    </div>
+  );
+}
 ```
 
 ### 🪝 `useProposal`
@@ -221,7 +326,7 @@ Hook for fetching data for a proposal.
 import { useProposal } from '@badublanc/builder-hooks';
 ```
 
-Configuration
+⚙️ Configuration
 
 ```ts
 type UseProposalConfig = {
@@ -229,6 +334,27 @@ type UseProposalConfig = {
   governorAddress: string; // address for DAO governor contract
   network?: 'mainnet' | 'goerli'; // default: 'mainnet'
 };
+```
+
+↩️ Returns
+
+```ts
+{
+
+}
+```
+
+📝 Usage
+
+```tsx
+import { useProposal } from '@badublanc/builder-hooks';
+
+export default function App() {
+  return (
+    <div>
+    </div>
+  );
+}
 ```
 
 ### 🪝 `useProposalList`
@@ -239,7 +365,7 @@ Hook for fetching a basic list of a DAO's proposals.
 import { useProposalList } from '@badublanc/builder-hooks';
 ```
 
-Configuration
+⚙️ Configuration
 
 ```ts
 type UseProposalListConfig = {
@@ -247,6 +373,27 @@ type UseProposalListConfig = {
   sortDirection?: 'asc' | 'desc'; // default: 'desc'
   network?: 'mainnet' | 'goerli'; // default: 'mainnet'
 };
+```
+
+↩️ Returns
+
+```ts
+{
+
+}
+```
+
+📝 Usage
+
+```tsx
+import { useProposalList } from '@badublanc/builder-hooks';
+
+export default function App() {
+  return (
+    <div>
+    </div>
+  );
+}
 ```
 
 ### 🪝 `useSettleAuction`
@@ -257,13 +404,34 @@ Hook for submitting a transaction to settle an auction and starting the next one
 import { useSettleAuction } from '@badublanc/builder-hooks';
 ```
 
-Configuration
+⚙️ Configuration
 
 ```ts
 type UseSettleAuctionConfig = {
   auctionAddress: string; // address for DAO auction house contract
   network?: 'mainnet' | 'goerli'; // default: 'mainnet'
 };
+```
+
+↩️ Returns
+
+```ts
+{
+
+}
+```
+
+📝 Usage
+
+```tsx
+import { useSettleAuction } from '@badublanc/builder-hooks';
+
+export default function App() {
+  return (
+    <div>
+    </div>
+  );
+}
 ```
 
 ### 🪝 `useToken`
@@ -274,7 +442,7 @@ Hook for fetching data for a token in the DAO collection.
 import { useToken } from '@badublanc/builder-hooks';
 ```
 
-Configuration
+⚙️ Configuration
 
 ```ts
 type UseTokenConfig = {
@@ -282,4 +450,25 @@ type UseTokenConfig = {
   tokenAddress: string; // address for DAO token/nft contract
   network?: 'mainnet' | 'goerli'; // default: 'mainnet'
 };
+```
+
+↩️ Returns
+
+```ts
+{
+
+}
+```
+
+📝 Usage
+
+```tsx
+import { useToken } from '@badublanc/builder-hooks';
+
+export default function App() {
+  return (
+    <div>
+    </div>
+  );
+}
 ```
