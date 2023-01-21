@@ -760,9 +760,7 @@ const abi = [
 		type: 'function',
 	},
 	{
-		inputs: [
-			{ internalType: 'uint256', name: '_newQuorumVotesBps', type: 'uint256' },
-		],
+		inputs: [{ internalType: 'uint256', name: '_newQuorumVotesBps', type: 'uint256' }],
 		name: 'updateQuorumThresholdBps',
 		outputs: [],
 		stateMutability: 'nonpayable',
@@ -776,18 +774,14 @@ const abi = [
 		type: 'function',
 	},
 	{
-		inputs: [
-			{ internalType: 'uint256', name: '_newVotingDelay', type: 'uint256' },
-		],
+		inputs: [{ internalType: 'uint256', name: '_newVotingDelay', type: 'uint256' }],
 		name: 'updateVotingDelay',
 		outputs: [],
 		stateMutability: 'nonpayable',
 		type: 'function',
 	},
 	{
-		inputs: [
-			{ internalType: 'uint256', name: '_newVotingPeriod', type: 'uint256' },
-		],
+		inputs: [{ internalType: 'uint256', name: '_newVotingPeriod', type: 'uint256' }],
 		name: 'updateVotingPeriod',
 		outputs: [],
 		stateMutability: 'nonpayable',

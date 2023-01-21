@@ -409,9 +409,7 @@ const abi = [
 		type: 'function',
 	},
 	{
-		inputs: [
-			{ internalType: 'uint256', name: '_reservePrice', type: 'uint256' },
-		],
+		inputs: [{ internalType: 'uint256', name: '_reservePrice', type: 'uint256' }],
 		name: 'setReservePrice',
 		outputs: [],
 		stateMutability: 'nonpayable',

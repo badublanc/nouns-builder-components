@@ -416,9 +416,7 @@ const abi = [
 		type: 'function',
 	},
 	{
-		inputs: [
-			{ internalType: 'uint256', name: '_newGracePeriod', type: 'uint256' },
-		],
+		inputs: [{ internalType: 'uint256', name: '_newGracePeriod', type: 'uint256' }],
 		name: 'updateGracePeriod',
 		outputs: [],
 		stateMutability: 'nonpayable',

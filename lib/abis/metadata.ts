@@ -9,9 +9,7 @@ const abi = [
 	{ inputs: [], name: 'DELEGATE_CALL_FAILED', type: 'error' },
 	{ inputs: [], name: 'INITIALIZING', type: 'error' },
 	{
-		inputs: [
-			{ internalType: 'uint256', name: 'selectedPropertyId', type: 'uint256' },
-		],
+		inputs: [{ internalType: 'uint256', name: 'selectedPropertyId', type: 'uint256' }],
 		name: 'INVALID_PROPERTY_SELECTED',
 		type: 'error',
 	},
@@ -47,8 +45,7 @@ const abi = [
 					{ internalType: 'bool', name: 'quote', type: 'bool' },
 				],
 				indexed: false,
-				internalType:
-					'struct MetadataRendererTypesV2.AdditionalTokenProperty[]',
+				internalType: 'struct MetadataRendererTypesV2.AdditionalTokenProperty[]',
 				name: '_additionalJsonProperties',
 				type: 'tuple[]',
 			},
@@ -362,8 +359,7 @@ const abi = [
 					{ internalType: 'string', name: 'value', type: 'string' },
 					{ internalType: 'bool', name: 'quote', type: 'bool' },
 				],
-				internalType:
-					'struct MetadataRendererTypesV2.AdditionalTokenProperty[]',
+				internalType: 'struct MetadataRendererTypesV2.AdditionalTokenProperty[]',
 				name: '_additionalTokenProperties',
 				type: 'tuple[]',
 			},
@@ -401,36 +397,28 @@ const abi = [
 		type: 'function',
 	},
 	{
-		inputs: [
-			{ internalType: 'string', name: '_newContractImage', type: 'string' },
-		],
+		inputs: [{ internalType: 'string', name: '_newContractImage', type: 'string' }],
 		name: 'updateContractImage',
 		outputs: [],
 		stateMutability: 'nonpayable',
 		type: 'function',
 	},
 	{
-		inputs: [
-			{ internalType: 'string', name: '_newDescription', type: 'string' },
-		],
+		inputs: [{ internalType: 'string', name: '_newDescription', type: 'string' }],
 		name: 'updateDescription',
 		outputs: [],
 		stateMutability: 'nonpayable',
 		type: 'function',
 	},
 	{
-		inputs: [
-			{ internalType: 'string', name: '_newProjectURI', type: 'string' },
-		],
+		inputs: [{ internalType: 'string', name: '_newProjectURI', type: 'string' }],
 		name: 'updateProjectURI',
 		outputs: [],
 		stateMutability: 'nonpayable',
 		type: 'function',
 	},
 	{
-		inputs: [
-			{ internalType: 'string', name: '_newRendererBase', type: 'string' },
-		],
+		inputs: [{ internalType: 'string', name: '_newRendererBase', type: 'string' }],
 		name: 'updateRendererBase',
 		outputs: [],
 		stateMutability: 'nonpayable',
