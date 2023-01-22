@@ -3,13 +3,13 @@ import React, { useContext, useEffect, useState } from 'react';
 import { DaoContext } from '../context';
 import { fetchDataWithQuery, logWarning } from '../utils';
 
-export const useDao = (config?: Partial<DaoConfig>) => {
+export const useDao = (config?: Partial<DaoConfig>): DaoInfo => {
 	const ctx = useContext(DaoContext);
 	const defaultData = {} as DaoInfo;
 
 	const [collection, setCollection] = useState<string>(config?.collection || ctx.collection || '');
 	const [chain, setChain] = useState<DaoConfig['chain']>(config?.chain || ctx.chain || 'MAINNET');
-	const [data, setData] = useState<DaoInfo>(defaultData);
+	const [data, setData] = useState<DaoInfo>();
 
 	useEffect(() => {
 		const fetchData = async () => {

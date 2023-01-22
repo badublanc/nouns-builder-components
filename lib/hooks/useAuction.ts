@@ -1,12 +1,13 @@
-import type { DaoConfig } from '../types';
+import type { DaoConfig, DaoInfo } from '../types';
 import React, { FormEvent, useEffect, useState } from 'react';
-import { useDao } from '.';
-import { fetchDataWithQueries, logWarning } from '../utils';
+import { fetchDataWithQuery, logWarning } from '../utils';
 import { formatEther, parseEther } from 'ethers/lib/utils.js';
+import { constants } from 'ethers';
+import { useContractEvent } from 'wagmi';
+import { AuctionABI } from '../abis';
 
 type AuctionData = {
-	auction: number;
-	isActive: boolean;
+	auctionId: number;
 	chain: DaoConfig['chain'];
 	startTime: number;
 	endTime: number;
@@ -15,23 +16,13 @@ type AuctionData = {
 	minPctIncrease: string;
 };
 
-type TokenData = {
-	id: number;
-	name: string;
-	imageUrl: string;
-	attributes: Record<string, any>;
+const defaultData = {
+	auction: {} as AuctionData,
+	minBid: formatEther(parseEther('0.001')),
 };
 
-export const useAuction = () => {
-	const dao = useDao();
-	const defaultData = {
-		auction: {} as AuctionData,
-		token: {} as TokenData,
-		minBid: formatEther(parseEther('0.001')),
-	};
-
+export const useAuction = (dao: DaoInfo) => {
 	const [auctionData, setAuctionData] = useState<AuctionData>(defaultData.auction);
-	const [tokenData, setTokenData] = useState<TokenData>(defaultData.token);
 	const [minBid, setMinBid] = useState<string>(defaultData.minBid);
 	const [userBid, setUserBid] = useState<string>('');
 	const [isValidUserBid, setIsValidUserBid] = useState<boolean>(false);
@@ -44,16 +35,13 @@ export const useAuction = () => {
 	useEffect(() => {
 		const fetchData = async () => {
 			const { collection } = dao.contracts;
-			const data = await fetchDataWithQueries([auctionQuery, tokenQuery], {
+			const data = await fetchDataWithQuery(auctionQuery, {
 				collection,
 				chain: dao.chain,
 			});
 			const clean = formatData(data, dao.chain);
-			if (clean) {
-				console.log(clean);
-				setAuctionData(clean.auction);
-				setTokenData(clean.token);
-			} else {
+			if (clean) setAuctionData(clean);
+			else {
 				logWarning('no_data', collection, dao.chain);
 			}
 		};
@@ -77,7 +65,8 @@ export const useAuction = () => {
 
 	// confirm if user bid is valid
 	useEffect(() => {
-		if (!userBid || !Number.isInteger(tokenData.id)) setIsValidUserBid(false);
+		if (Date.now() >= auctionData.endTime) setIsValidUserBid(false);
+		else if (!userBid || !Number.isInteger(auctionData.auctionId)) setIsValidUserBid(false);
 		else {
 			const bid = parseEther(userBid);
 			const min = parseEther(minBid);
@@ -85,11 +74,47 @@ export const useAuction = () => {
 			setIsValidUserBid(isValid);
 		}
 		return () => setIsValidUserBid(false);
-	}, [minBid, userBid]);
+	}, [auctionData.endTime, minBid, userBid]);
+
+	// listen for new bids
+	useContractEvent({
+		address: dao.contracts.auction as `0x${string}`,
+		chainId: dao.chainId,
+		abi: AuctionABI,
+		eventName: 'AuctionBid',
+		listener(tokenId, bidder, bid, extended, endTime) {
+			const data = { ...auctionData };
+			data.auctionId = tokenId.toNumber();
+			data.highestBidder = bidder;
+			data.highestBid = formatEther(bid);
+			if (extended) data.endTime = endTime.toNumber() * 1000;
+			setAuctionData(data);
+		},
+	});
+
+	// listen for new auction
+	useContractEvent({
+		address: dao.contracts.auction as `0x${string}`,
+		chainId: dao.chainId,
+		abi: AuctionABI,
+		eventName: 'AuctionCreated',
+		listener(tokenId, startTime, endTime) {
+			console.log(tokenId, startTime, endTime);
+			const data: AuctionData = {
+				auctionId: tokenId.toNumber(),
+				startTime: startTime.toNumber() * 1000,
+				endTime: endTime.toNumber() * 1000,
+				highestBid: formatEther('0'),
+				highestBidder: constants.AddressZero,
+				chain: dao.chain,
+				minPctIncrease: auctionData.minPctIncrease,
+			};
+			setAuctionData(data);
+		},
+	});
 
 	return {
 		auctionData,
-		tokenData,
 		formData: {
 			attributes: {},
 			input: {
@@ -107,36 +132,22 @@ export const useAuction = () => {
 	};
 };
 
-const formatData = (data: any[], chain: DaoConfig['chain']) => {
-	const { nounsActiveMarket: auctionData } = data[0]?.data?.nouns;
-	const tokenData = data[1]?.data?.tokens?.nodes[0]?.token;
+const formatData = (data: any, chain: DaoConfig['chain']) => {
+	const { nounsActiveMarket: auctionData } = data?.data?.nouns;
 
-	if (!auctionData?.tokenId || !tokenData?.tokenId) return null;
+	if (!auctionData?.tokenId) return null;
 
 	const auction: AuctionData = {
-		auction: Number(auctionData?.tokenId),
-		startTime: Number(auctionData?.startTime),
-		endTime: Number(auctionData?.endTime),
-		isActive: Date.now() < Number(auctionData?.endTime) * 1000,
+		auctionId: Number(auctionData?.tokenId),
+		startTime: Number(auctionData?.startTime) * 1000,
+		endTime: Number(auctionData?.endTime) * 1000,
 		highestBid: String(auctionData?.highestBidPrice?.nativePrice?.decimal),
 		highestBidder: auctionData?.highestBidder,
 		minPctIncrease: String(auctionData?.minBidIncrementPercentage),
 		chain,
 	};
 
-	const token: TokenData = {
-		id: Number(tokenData?.tokenId),
-		name: tokenData?.name,
-		imageUrl: tokenData?.image?.url,
-		attributes: tokenData?.attributes?.map((attribute: Record<string, any>) => {
-			return {
-				label: attribute?.traitType,
-				value: attribute?.value,
-			};
-		}),
-	};
-
-	return { auction, token };
+	return auction;
 };
 
 const auctionQuery = `query GetCurrentAuction($collection: String!, $chain: Chain!) {
@@ -155,29 +166,6 @@ const auctionQuery = `query GetCurrentAuction($collection: String!, $chain: Chai
         }
       }
       minBidIncrementPercentage
-    }
-  }
-}`;
-
-const tokenQuery = `query GetTokenOnAuction($collection: [String!], $chain: Chain!) {
-  tokens(
-    sort: {sortKey: MINTED, sortDirection: DESC}
-    pagination: {limit: 1}
-    networks: {network: ETHEREUM, chain: $chain}
-    where: {collectionAddresses: $collection}
-  ) {
-    nodes {
-      token {
-				tokenId
-				name
-        image {
-          url
-        }
-        attributes {
-          traitType
-          value
-        }
-      }
     }
   }
 }`;

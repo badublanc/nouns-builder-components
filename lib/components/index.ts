@@ -1,1 +1,1 @@
-export { Auction } from './Auction';
+export { Auction } from './AuctionHero/Auction';
