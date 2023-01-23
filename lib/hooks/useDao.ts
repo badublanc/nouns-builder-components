@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { DaoContext } from '../context';
 import { fetchDataWithQuery, logWarning } from '../utils';
 
-export const useDao = (config?: Partial<DaoConfig>): DaoInfo => {
+export const useDao = (config?: Partial<DaoConfig>): DaoInfo | undefined => {
 	const ctx = useContext(DaoContext);
 	const defaultData = {} as DaoInfo;
 

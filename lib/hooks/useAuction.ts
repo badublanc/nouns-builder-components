@@ -5,6 +5,7 @@ import { formatEther, parseEther } from 'ethers/lib/utils.js';
 import { constants } from 'ethers';
 import { useContractEvent } from 'wagmi';
 import { AuctionABI } from '../abis';
+import { emit } from '../utils/events';
 
 type AuctionData = {
 	auctionId: number;
@@ -99,7 +100,6 @@ export const useAuction = (dao: DaoInfo) => {
 		abi: AuctionABI,
 		eventName: 'AuctionCreated',
 		listener(tokenId, startTime, endTime) {
-			console.log(tokenId, startTime, endTime);
 			const data: AuctionData = {
 				auctionId: tokenId.toNumber(),
 				startTime: startTime.toNumber() * 1000,
@@ -110,6 +110,7 @@ export const useAuction = (dao: DaoInfo) => {
 				minPctIncrease: auctionData.minPctIncrease,
 			};
 			setAuctionData(data);
+			// emit('auctionCreated', data);
 		},
 	});
 

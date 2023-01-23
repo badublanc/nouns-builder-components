@@ -1,6 +1,9 @@
 import type { DaoConfig, DaoInfo } from '../types';
 import React, { useEffect, useState } from 'react';
 import { fetchDataWithQuery, logWarning } from '../utils';
+import { BigNumber } from '@ethersproject/bignumber';
+import { useContract, useProvider } from 'wagmi';
+import { TokenABI } from '../abis';
 
 type TokenData = {
 	id: number;
@@ -9,8 +12,8 @@ type TokenData = {
 	description: string;
 	imageUrl: string;
 	attributes: Record<string, any>;
-	auctionData: {
-		winner?: string;
+	auctionData?: {
+		winner: string;
 		amount: string;
 		startTime: number;
 		endTime: number;
@@ -21,7 +24,34 @@ type TokenData = {
 const defaultData = {} as TokenData;
 
 export const useToken = (id: number, dao: DaoInfo) => {
+	const provider = useProvider();
 	const [tokenData, setTokenData] = useState<TokenData>(defaultData);
+
+	const tokenContract = useContract({
+		address: dao.contracts.collection as `0x${string}`,
+		abi: TokenABI,
+		signerOrProvider: provider,
+	});
+
+	const fetchDataFromContract = async (id: number): Promise<TokenData | null> => {
+		const tokenId = BigNumber.from(String(id));
+		const response = await tokenContract?.tokenURI(tokenId);
+
+		if (!response) return null;
+
+		const data = JSON.parse(window.atob(response.split(',')[1]));
+		const { name, description, image, properties } = data;
+
+		return {
+			id,
+			owner: '',
+			name,
+			description,
+			imageUrl: image,
+			attributes: {},
+			chain: dao.chain,
+		};
+	};
 
 	// fetch data from zora api
 	useEffect(() => {
@@ -33,9 +63,14 @@ export const useToken = (id: number, dao: DaoInfo) => {
 				chain: dao.chain,
 			});
 			const clean = formatData(data, dao.chain);
-			if (clean) setTokenData(clean);
+			if (clean?.name) setTokenData(clean);
 			else {
-				logWarning('no_data', collection, dao.chain);
+				logWarning('no_data_from_api', collection, dao.chain);
+				const data = await fetchDataFromContract(id);
+				if (data) setTokenData(data);
+				else {
+					logWarning('no_data', collection, dao.chain);
+				}
 			}
 		};
 

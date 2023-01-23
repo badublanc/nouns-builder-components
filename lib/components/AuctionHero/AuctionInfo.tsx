@@ -1,16 +1,31 @@
 import type { DaoInfo } from '../../types';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAuction, useToken } from '../..';
 import Countdown, { CountdownRenderProps } from 'react-countdown';
 import { Account } from './Account';
 import { BidForm } from './BidForm';
 
 export const AuctionInfo = ({ dao }: { dao: DaoInfo }) => {
-	const [tokenId, setTokenId] = useState<number>(dao.totalSupply - 1);
-	const [showCountdown, setShowCountdown] = useState<boolean>(true);
-
 	const { auctionData, formData } = useAuction(dao);
+
+	const [latestTokenId, setLatestTokenId] = useState<number>();
+	const [tokenId, setTokenId] = useState<number>();
+	const [showCountdown, toggleCountdown] = useState<boolean>(true);
+
 	const token = useToken(tokenId, dao);
+
+	useEffect(() => {
+		const currentAuctionToken = auctionData?.auctionId;
+
+		if (currentAuctionToken >= 0) {
+			if (!Number.isInteger(tokenId)) setTokenId(currentAuctionToken);
+
+			if (!Number.isInteger(latestTokenId) || tokenId === latestTokenId) {
+				setTokenId(currentAuctionToken);
+				setLatestTokenId(currentAuctionToken);
+			} else setLatestTokenId(currentAuctionToken);
+		}
+	}, [auctionData?.auctionId]);
 
 	const countdownRenderer = (props: CountdownRenderProps) => {
 		if (props.completed) {
@@ -80,7 +95,7 @@ export const AuctionInfo = ({ dao }: { dao: DaoInfo }) => {
 										<button
 											className="font-bold text-gray-800"
 											onClick={() => {
-												setShowCountdown(!showCountdown);
+												toggleCountdown(!showCountdown);
 											}}
 										>
 											{showCountdown ? (
