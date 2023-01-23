@@ -23,7 +23,7 @@ type TokenData = {
 
 const defaultData = {} as TokenData;
 
-export const useToken = (id: number, dao: DaoInfo) => {
+export const useToken = (id: number | undefined, dao: DaoInfo) => {
 	const provider = useProvider();
 	const [tokenData, setTokenData] = useState<TokenData>(defaultData);
 
@@ -55,7 +55,7 @@ export const useToken = (id: number, dao: DaoInfo) => {
 
 	// fetch data from zora api
 	useEffect(() => {
-		const fetchData = async () => {
+		const fetchData = async (id: number) => {
 			const { collection } = dao.contracts;
 			const data = await fetchDataWithQuery(tokenQuery, {
 				tokenId: String(id),
@@ -74,7 +74,7 @@ export const useToken = (id: number, dao: DaoInfo) => {
 			}
 		};
 
-		if (Number.isInteger(id) && dao.contracts?.collection && dao.chain) fetchData();
+		if (id !== undefined && dao.contracts?.collection && dao.chain) fetchData(id);
 	}, [id, dao]);
 
 	return tokenData;
