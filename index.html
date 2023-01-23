@@ -1,13 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React + TS</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Builder Components</title>
+		<div data-builder-config data-infura-key="cfe94335ab724354835fefb844aa0db7" />
+	</head>
+	<body>
+		<div data-builder-component="connectButton"></div>
+
+		<div
+			data-builder-component="auctionHero"
+			data-chain="GOERLI"
+			data-dao-collection="0x73e769fcd28e66c43f785f5479b4ba8ef9886863"
+		></div>
+		<script type="module" src="/src/main.tsx"></script>
+	</body>
 </html>
