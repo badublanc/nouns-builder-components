@@ -2,6 +2,7 @@ import './index.css';
 import '@rainbow-me/rainbowkit/styles.css';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import { WagmiConfig, createClient, configureChains, mainnet, goerli } from 'wagmi';
 import { infuraProvider } from 'wagmi/providers/infura';
@@ -28,7 +29,9 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 	<React.StrictMode>
 		<WagmiConfig client={client}>
 			<RainbowKitProvider chains={chains}>
-				<App />
+				<BrowserRouter>
+					<App />
+				</BrowserRouter>
 			</RainbowKitProvider>
 		</WagmiConfig>
 	</React.StrictMode>
