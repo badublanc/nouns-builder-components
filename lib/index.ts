@@ -5,4 +5,4 @@ export { BuilderDAO } from './context';
 export { useAuction, useDao, useToken } from './hooks';
 
 // components
-export { Auction } from './components';
+export { AuctionHero } from './components';

@@ -5,7 +5,7 @@ import Countdown, { CountdownRenderProps } from 'react-countdown';
 import { Account } from './Account';
 import { BidForm } from './BidForm';
 
-export const AuctionInfo = ({ dao }: { dao: DaoInfo }) => {
+export const Hero = ({ dao }: { dao: DaoInfo }) => {
 	const { auctionData, formData } = useAuction(dao);
 
 	const [latestTokenId, setLatestTokenId] = useState<number>();
