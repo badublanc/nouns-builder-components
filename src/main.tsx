@@ -9,14 +9,15 @@ import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { BuilderDAO } from '../lib';
 
 const config = document.querySelector('[data-builder-config]') as HTMLElement;
+const chain = config?.dataset.chain?.toUpperCase() as 'MAINNET' | 'GOERLI';
 const apiKey = config?.dataset.infuraKey || '';
 
 if (!apiKey) {
-	throw new Error('Infura key required');
+	throw new Error('Infura key required. See docs for more information.');
 }
 
 const { chains, provider, webSocketProvider } = configureChains(
-	[mainnet, goerli],
+	[chain === 'GOERLI' ? goerli : mainnet],
 	[infuraProvider({ apiKey })]
 );
 
@@ -36,9 +37,8 @@ const roots = document.querySelectorAll('[data-builder-component]');
 const daoNotRequired = ['connectButton'];
 
 for (const root of roots) {
-	const chain = (root as HTMLElement)?.dataset.chain as 'MAINNET' | 'GOERLI';
-	const collection = (root as HTMLElement)?.dataset.daoCollection || '';
 	const component = (root as HTMLElement)?.dataset.builderComponent || '';
+	const collection = (root as HTMLElement)?.dataset.daoCollection || '';
 
 	if (!component) {
 		console.warn('component type required.');
