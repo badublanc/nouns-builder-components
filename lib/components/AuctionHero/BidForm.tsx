@@ -47,7 +47,7 @@ export const BidForm = ({ tokenId, formData, dao }: any) => {
 						onClick={() => switchNetwork?.(dao.chainId)}
 						className={`text-white bg-purple-700 hover:bg-red-800 rounded-lg text-xl px-5 py-4 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800 disabled:bg-gray-500 disabled:dark:bg-grey-500 disabled:cursor-not-allowed disabled:pointer-events-none flex-shrink-0 w-full`}
 					>
-						Wrong network...
+						Switch to {dao.chainId === 1 ? 'Mainnet' : 'Goerli'}
 					</button>
 				</div>
 			) : (
