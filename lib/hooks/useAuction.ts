@@ -5,7 +5,6 @@ import { formatEther, parseEther } from 'ethers/lib/utils.js';
 import { constants } from 'ethers';
 import { useContractEvent } from 'wagmi';
 import { AuctionABI } from '../abis';
-import { emit } from '../utils/events';
 
 type AuctionData = {
 	auctionId: number;
