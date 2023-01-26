@@ -1,37 +1,34 @@
 import './index.css';
-import '@rainbow-me/rainbowkit/styles.css';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import { WagmiConfig, createClient, configureChains, mainnet, goerli } from 'wagmi';
 import { infuraProvider } from 'wagmi/providers/infura';
-import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit';
+import { ConnectKitProvider, getDefaultClient } from 'connectkit';
 import { BuilderDAO } from '../lib';
 
 const config = document.querySelector('[data-builder-config]') as HTMLElement;
 const chain = config?.dataset.chain?.toUpperCase() as 'MAINNET' | 'GOERLI';
-const apiKey = config?.dataset.infuraKey || '';
+const infuraId = config?.dataset.infuraKey || '';
 
-if (!apiKey) {
+if (!infuraId) {
 	throw new Error('Infura key required. See docs for more information.');
 }
 
 const { chains, provider, webSocketProvider } = configureChains(
 	[chain === 'GOERLI' ? goerli : mainnet],
-	[infuraProvider({ apiKey })]
+	[infuraProvider({ apiKey: infuraId })]
 );
 
-const { connectors } = getDefaultWallets({
-	appName: 'builder-hooks',
-	chains,
-});
-
-const client = createClient({
-	autoConnect: true,
-	connectors,
-	provider,
-	webSocketProvider,
-});
+const client = createClient(
+	getDefaultClient({
+		appName: 'Builder Components',
+		autoConnect: true,
+		chains,
+		provider,
+		webSocketProvider,
+	})
+);
 
 const roots = document.querySelectorAll('[data-builder-component]');
 const daoNotRequired = ['connectButton'];
@@ -51,11 +48,11 @@ for (const root of roots) {
 	ReactDOM.createRoot(root).render(
 		<React.StrictMode>
 			<WagmiConfig client={client}>
-				<RainbowKitProvider chains={chains}>
+				<ConnectKitProvider>
 					<BuilderDAO collection={collection} chain={chain}>
 						<App component={component} />
 					</BuilderDAO>
-				</RainbowKitProvider>
+				</ConnectKitProvider>
 			</WagmiConfig>
 		</React.StrictMode>
 	);

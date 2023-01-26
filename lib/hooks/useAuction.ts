@@ -110,7 +110,6 @@ export const useAuction = (dao: DaoInfo) => {
 				minPctIncrease: auctionData.minPctIncrease,
 			};
 			setAuctionData(data);
-			// emit('auctionCreated', data);
 		},
 	});
 
@@ -129,6 +128,7 @@ export const useAuction = (dao: DaoInfo) => {
 			btn: {
 				disabled: !isValidUserBid,
 			},
+			addMinBid: () => setUserBid(minBid),
 		},
 	};
 };
