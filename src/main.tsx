@@ -8,11 +8,16 @@ import { ConnectKitProvider, getDefaultClient } from 'connectkit';
 import { BuilderDAO } from '../lib';
 
 const config = document.querySelector('[data-builder-config]') as HTMLElement;
-const chain = config?.dataset.chain?.toUpperCase() as 'MAINNET' | 'GOERLI';
+const chain = (config?.dataset.chain?.toUpperCase() as 'MAINNET' | 'GOERLI') || 'MAINNET';
+const collection = config?.dataset.daoCollection || '';
 const infuraId = config?.dataset.infuraKey || '';
 
 if (!infuraId) {
 	throw new Error('Infura key required. See docs for more information.');
+} else if (!collection) {
+	throw new Error('Collection address required. See docs for more information.');
+} else if (!['MAINNET', 'GOERLI'].includes(chain)) {
+	throw new Error(`Invalid chain: ${chain}. Chain must be set to mainnet or goerli.`);
 }
 
 const { chains, provider, webSocketProvider } = configureChains(
@@ -22,7 +27,7 @@ const { chains, provider, webSocketProvider } = configureChains(
 
 const client = createClient(
 	getDefaultClient({
-		appName: 'Builder Components',
+		appName: 'DAO Components',
 		autoConnect: true,
 		chains,
 		provider,
@@ -30,27 +35,22 @@ const client = createClient(
 	})
 );
 
-const roots = document.querySelectorAll('[data-builder-component]');
-const daoNotRequired = ['connectButton'];
+const components = document.querySelectorAll('[data-builder-component]');
 
-for (const root of roots) {
-	const component = (root as HTMLElement)?.dataset.builderComponent || '';
-	const collection = (root as HTMLElement)?.dataset.daoCollection || '';
+if (!components.length) {
+	throw new Error('No builder components found. See documentation for setup info.');
+}
 
-	if (!component) {
-		console.warn('component type required.');
-		break;
-	} else if (!daoNotRequired.includes(component) && !collection) {
-		console.warn(`collection required for ${component}`);
-		break;
-	}
+for (const component of components) {
+	const root = component as HTMLElement;
+	const config = root.dataset;
 
 	ReactDOM.createRoot(root).render(
 		<React.StrictMode>
 			<WagmiConfig client={client}>
 				<ConnectKitProvider>
 					<BuilderDAO collection={collection} chain={chain}>
-						<App component={component} />
+						<App config={config} />
 					</BuilderDAO>
 				</ConnectKitProvider>
 			</WagmiConfig>

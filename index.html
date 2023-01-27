@@ -8,15 +8,18 @@
 			data-builder-config
 			data-chain="goerli"
 			data-infura-key="cfe94335ab724354835fefb844aa0db7"
+			data-dao-collection="0x73e769fcd28e66c43f785f5479b4ba8ef9886863"
 		/>
 	</head>
 	<body>
-		<div data-builder-component="connectButton"></div>
-
+		<div data-builder-component="connect-button"></div>
+		<div data-builder-component="auction-hero"></div>
 		<div
-			data-builder-component="auctionHero"
-			data-dao-collection="0x73e769fcd28e66c43f785f5479b4ba8ef9886863"
+			data-builder-component="collection-list"
+			data-sort-direction="asc"
+			data-items-per-row="4"
 		></div>
+
 		<script type="module" src="/src/main.tsx"></script>
 	</body>
 </html>

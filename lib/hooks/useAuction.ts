@@ -1,20 +1,10 @@
-import type { DaoConfig, DaoInfo } from '../types';
 import React, { FormEvent, useEffect, useState } from 'react';
-import { fetchDataWithQuery, logWarning } from '../utils';
-import { formatEther, parseEther } from 'ethers/lib/utils.js';
-import { constants } from 'ethers';
 import { useContractEvent } from 'wagmi';
+import { constants } from 'ethers';
+import { formatEther, parseEther } from 'ethers/lib/utils.js';
+import type { DaoConfig, DaoInfo, AuctionData } from '../types';
 import { AuctionABI } from '../abis';
-
-type AuctionData = {
-	auctionId: number;
-	chain: DaoConfig['chain'];
-	startTime: number;
-	endTime: number;
-	highestBid: string;
-	highestBidder: string;
-	minPctIncrease: string;
-};
+import { fetchAuctionData } from '../queries';
 
 const defaultData = {
 	auction: {} as AuctionData,
@@ -34,16 +24,11 @@ export const useAuction = (dao: DaoInfo) => {
 	// fetch data from zora api
 	useEffect(() => {
 		const fetchData = async () => {
+			const { chain } = dao;
 			const { collection } = dao.contracts;
-			const data = await fetchDataWithQuery(auctionQuery, {
-				collection,
-				chain: dao.chain,
-			});
-			const clean = formatData(data, dao.chain);
-			if (clean) setAuctionData(clean);
-			else {
-				logWarning('no_data', collection, dao.chain);
-			}
+			const data = await fetchAuctionData({ collection, chain });
+			if (data) setAuctionData(data);
+			else setAuctionData(defaultData.auction);
 		};
 
 		if (dao.contracts?.collection && dao.chain) fetchData();
