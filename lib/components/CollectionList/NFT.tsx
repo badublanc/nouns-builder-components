@@ -30,7 +30,7 @@ export const NFT = ({ token, showDetails, dao, darkMode, inCollectionList }: Pro
 							src={token.imageUrl}
 							alt={token.name}
 							className={cx(
-								'rounded-md',
+								'rounded-md w-full',
 								!inCollectionList && 'rounded-b-none !md:rounded-md !md:rounded-r-none'
 							)}
 						/>

@@ -62,3 +62,8 @@ export type TokenData = {
 		transactionHash: string;
 	};
 };
+
+export type DaoMember = {
+	address: string;
+	tokenIds: number[];
+};

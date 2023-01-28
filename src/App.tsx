@@ -1,6 +1,6 @@
 import { ConnectKitButton } from 'connectkit';
 import type { DaoInfo } from '../lib/types';
-import { AuctionHero, CollectionList, useDao } from '../lib';
+import { AuctionHero, CollectionList, MemberList, useDao } from '../lib';
 
 const component = (name: string, dao: DaoInfo, config: DOMStringMap) => {
 	switch (name) {
@@ -10,6 +10,8 @@ const component = (name: string, dao: DaoInfo, config: DOMStringMap) => {
 			return <CollectionList dao={dao} opts={config} />;
 		case 'connect-button':
 			return <ConnectKitButton />;
+		case 'member-list':
+			return <MemberList dao={dao} />;
 		default:
 			console.error('Component type required. See docs for more info.');
 			return <></>;
