@@ -12,13 +12,13 @@ body {
 
 @font-face {
 	font-family: 'PT Root UI';
-	src: url('../assets/fonts/PT-Root-UI_Regular.woff2') format('woff2');
-	weight: 400;
+	src: url('https://fonts.cdnfonts.com/s/17770/PT Root UI_Regular.woff') format('woff');
+	font-weight: 400;
 	font-style: normal;
 }
 @font-face {
 	font-family: 'PT Root UI';
-	src: url('../assets/fonts/PT-Root-UI_Bold.woff2') format('woff2');
-	weight: 700;
+	src: url('https://fonts.cdnfonts.com/s/17770/PT Root UI_Bold.woff') format('woff');
+	font-weight: 700;
 	font-style: bold;
 }
