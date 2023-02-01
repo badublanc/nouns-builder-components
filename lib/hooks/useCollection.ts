@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import type { DaoInfo, CollectionData, TokenData } from '../types';
+import type { DaoInfo, TokenData } from '../types';
 import { fetchCollectionTokens } from '../queries';
 
-export const useCollection = (dao: DaoInfo): CollectionData => {
+export const useCollection = (dao: DaoInfo): TokenData[] => {
 	const [tokens, setTokens] = useState<TokenData[]>();
 
 	// fetch data from zora api
@@ -18,12 +18,5 @@ export const useCollection = (dao: DaoInfo): CollectionData => {
 		if (dao) fetchData();
 	}, [dao]);
 
-	return tokens
-		? {
-				name: '',
-				website: '',
-				image: '',
-				tokens,
-		  }
-		: ({} as CollectionData);
+	return tokens ?? [];
 };

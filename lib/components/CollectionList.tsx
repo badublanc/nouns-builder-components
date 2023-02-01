@@ -16,12 +16,11 @@ export const CollectionList = ({ dao, opts }: { dao: DaoInfo; opts: DOMStringMap
 	const [tokens, setTokens] = useState<TokenData[]>([]);
 
 	useEffect(() => {
-		const tokens = collection.tokens;
-		if (tokens && tokens.length) {
+		if (collection.length) {
 			if (sortDirection === 'DESC') {
-				const sorted = tokens.sort((a, b) => b.id - a.id);
+				const sorted = [...collection].sort((a, b) => b.id - a.id);
 				setTokens(sorted);
-			} else setTokens(tokens);
+			} else setTokens(collection);
 		}
 	}, [collection]);
 
