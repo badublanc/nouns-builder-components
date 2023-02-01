@@ -1,10 +1,9 @@
 import { Theme, ThemeConfig } from '../types';
-import baseTheme from '../themes/base';
-import darkTheme from '../themes/dark';
+import { themes } from '.';
 
 export function getThemeStyles(theme: Theme) {
-	if (theme === 'dark') return darkTheme;
-	return baseTheme;
+	if (theme === 'dark') return themes.dark;
+	return themes.base;
 }
 
 export function applyTheme(element: HTMLElement, theme: Theme) {
