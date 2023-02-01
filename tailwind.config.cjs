@@ -16,5 +16,10 @@ module.exports = {
 	variants: {
 		extend: {},
 	},
+	safelist: [
+		{
+			pattern: /grid-cols-([1-9]|1[0-2])/,
+		},
+	],
 	plugins: [require('@tailwindcss/typography'), require('@tailwindcss/line-clamp')],
 };
