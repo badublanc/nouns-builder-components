@@ -80,7 +80,7 @@ const query = `query GetCollection($collection: [String!], $chain: Chain!) {
   tokens(
     networks: {network: ETHEREUM, chain: $chain}
     where: {collectionAddresses: $collection}
-    pagination: {limit: 250}
+    pagination: {limit: 500}
     sort: {sortKey: MINTED, sortDirection: ASC}
   ) {
     nodes {

@@ -48,7 +48,7 @@ const query = `query GetMembers($collection: [String!]!, $chain: Chain!) {
     ownersByCount(
       where: {collectionAddresses: $collection}
       networks: {network: ETHEREUM, chain: $chain}
-      pagination: {limit: 250}
+      pagination: {limit: 500}
     ) {
       nodes {
         owner
