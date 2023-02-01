@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { constants } from 'ethers';
 import Countdown, { CountdownRenderProps } from 'react-countdown';
-import type { DaoInfo, Theme } from '../../types';
-import { useAuction, useToken } from '../..';
-import ComponentWrapper from '../ComponentWrapper';
-import { Account } from '../shared/Account';
+import type { DaoInfo, Theme } from '../types';
+import { useAuction, useToken } from '..';
+import ComponentWrapper from './ComponentWrapper';
+import { Account } from './shared/Account';
 import { BidForm } from './BidForm';
 
 export const AuctionHero = ({ dao, opts }: { dao: DaoInfo; opts?: DOMStringMap }) => {

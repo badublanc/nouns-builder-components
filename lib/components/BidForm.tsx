@@ -2,8 +2,8 @@ import React, { useRef, useEffect } from 'react';
 import { BigNumber } from 'ethers';
 import { parseEther } from 'ethers/lib/utils.js';
 import { usePrepareContractWrite, useContractWrite } from 'wagmi';
-import { applyTheme } from '../../themes/utils';
-import { AuctionABI } from '../../abis';
+import { applyTheme } from '../themes/utils';
+import { AuctionABI } from '../abis';
 
 export const BidForm = ({ tokenId, formData, dao, theme }: any) => {
 	const ref = useRef(null);

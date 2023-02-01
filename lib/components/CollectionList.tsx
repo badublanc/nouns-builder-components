@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { DaoInfo, Theme, TokenData } from '../../types';
-import { useCollection } from '../..';
+import { DaoInfo, Theme, TokenData } from '../types';
+import { useCollection } from '..';
 import { NFT } from './NFT';
-import ComponentWrapper from '../ComponentWrapper';
+import ComponentWrapper from './ComponentWrapper';
 
 export const CollectionList = ({ dao, opts }: { dao: DaoInfo; opts: DOMStringMap }) => {
 	const theme = opts?.theme as Theme;

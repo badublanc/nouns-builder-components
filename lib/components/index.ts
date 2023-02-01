@@ -1,4 +1,4 @@
-export { AuctionHero } from './AuctionHero/AuctionHero';
-export { CollectionList } from './CollectionList/CollectionList';
+export { AuctionHero } from './AuctionHero';
+export { CollectionList } from './CollectionList';
 export { MemberList } from './MemberList';
 export { Treasury } from './Treasury';

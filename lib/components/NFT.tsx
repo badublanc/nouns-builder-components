@@ -2,8 +2,8 @@ import React from 'react';
 import cx from 'classnames';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
-import type { DaoInfo, TokenData } from '../../types';
-import { Account } from '../shared/Account';
+import type { DaoInfo, TokenData } from '../types';
+import { Account } from './shared/Account';
 
 type Props = {
 	token: TokenData;
