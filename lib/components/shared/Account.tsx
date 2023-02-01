@@ -1,28 +1,44 @@
-import React from 'react';
-import { useEnsName, useEnsAvatar } from 'wagmi';
-import { DaoInfo } from '../../types';
-import { truncateAddress } from '../../utils';
-// import Avatar from "./shared/Avatar";
+import React, { useEffect, useState } from 'react';
+import cx from 'classnames';
+import type { DaoInfo } from '../../types';
+import { fetchEnsData, trunc } from '../../utils';
+import { Avatar } from './Avatar';
 
-type Props = {
+type AccountConfig = {
 	address: string;
 	chainId: DaoInfo['chainId'];
-	showAvatar?: boolean;
+	hideAvatar?: boolean;
 };
 
-export const Account = (props: Props) => {
-	const ensName = useEnsName({
-		address: props.address as `0x${string}`,
-		chainId: props.chainId,
-	}).data;
-	// const ensAvatar = useEnsAvatar({
-	// 	address: props.address as `0x${string}`,
-	// }).data;
+export const Account = ({ address, chainId, hideAvatar = false }: AccountConfig) => {
+	const [ensName, setEnsName] = useState<string>('');
+
+	useEffect(() => {
+		const getEnsData = async (address: string) => {
+			const { name } = await fetchEnsData(address);
+			if (name) setEnsName(name);
+			else setEnsName('');
+		};
+		if (address) getEnsData(address);
+		else setEnsName('');
+	}, [address]);
+
 	return (
-		<a href={`https://etherscan.io/address/${props.address}`} className="">
-			{/* <Avatar address={props.address} /> */}
-			<span className="w-full overflow-hidden overflow-ellipsis">
-				{ensName ? ensName : truncateAddress(props.address)}
+		<a
+			href={`https://etherscan.io/address/${address}`}
+			className="inline-flex flex-row items-center"
+			target="_blank"
+			rel="noreferrer"
+		>
+			{!hideAvatar === true && (
+				<span className="mr-2 h-6 w-6 absolute">
+					<Avatar address={address} chainId={chainId} />
+				</span>
+			)}
+			<span
+				className={cx('w-full overflow-hidden overflow-ellipsis', !hideAvatar === true && 'pl-7')}
+			>
+				{ensName ? ensName : trunc(address)}
 			</span>
 		</a>
 	);

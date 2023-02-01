@@ -1,5 +1,15 @@
 export type SortDirection = 'ASC' | 'DESC';
 
+export type Theme = 'base' | 'dark' | undefined;
+
+export type ThemeConfig = {
+	primary: string;
+	secondary: string;
+	textBase: string;
+	background: string;
+	border: string;
+};
+
 export type DaoConfig = {
 	collection: string;
 	chain: 'MAINNET' | 'GOERLI';

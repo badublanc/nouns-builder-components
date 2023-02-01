@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import Countdown, { CountdownRenderProps } from 'react-countdown';
-import type { DaoInfo } from '../../types';
+import type { DaoInfo, Theme } from '../../types';
 import { useAuction, useToken } from '../..';
+import ComponentWrapper from '../ComponentWrapper';
 import { Account } from '../shared/Account';
 import { BidForm } from './BidForm';
 
 export const AuctionHero = ({ dao, opts }: { dao: DaoInfo; opts?: DOMStringMap }) => {
+	const theme = opts?.theme as Theme;
 	const { auctionData, formData } = useAuction(dao);
 
 	const [latestTokenId, setLatestTokenId] = useState<number>();
@@ -27,6 +29,9 @@ export const AuctionHero = ({ dao, opts }: { dao: DaoInfo; opts?: DOMStringMap }
 		}
 	}, [auctionData?.auctionId]);
 
+	const date = auctionData && new Date(auctionData.endTime).toLocaleDateString('en-US');
+	const time = auctionData && new Date(auctionData.endTime).toLocaleTimeString('en-US');
+
 	const countdownRenderer = (props: CountdownRenderProps) => {
 		if (props.completed) {
 			// Render a completed state
@@ -42,106 +47,114 @@ export const AuctionHero = ({ dao, opts }: { dao: DaoInfo; opts?: DOMStringMap }
 	};
 
 	return (
-		<div id="auction" className="p-10 lg:p-20 col-span-2 w-full">
-			<div className="flex justify-center">
-				<div className="w-full md:max-w-[75vw] flex flex-col md:flex-row md:gap-10 items-center">
-					<div className="md:w-3/5 aspect-square">
-						{token?.imageUrl ? (
-							<img src={token.imageUrl} className="rounded-lg w-full" alt="" />
-						) : (
-							<></>
-						)}
-					</div>
-					<div className="my-10 w-full sm:w-3/4 md:w-2/5">
-						<div className="flex flex-row items-center w-full gap-2 mb-3 md:mb-6">
-							<button
-								className="bg-gray-400 hover:bg-gray-600 text-white font-bold py-1 px-2 rounded-full text-sm aspect-square disabled:bg-gray-100 leading-none"
-								disabled={!tokenId || tokenId <= 0}
-								onClick={() => {
-									tokenId !== undefined && tokenId >= 0 && setTokenId(tokenId - 1);
-								}}
-							>
-								←
-							</button>
-							<button
-								className="bg-slate-400 hover:bg-gray-600 text-white font-bold py-1 px-2 rounded-full text-sm aspect-square disabled:bg-gray-100 leading-none"
-								disabled={tokenId === auctionData?.auctionId}
-								onClick={() => {
-									tokenId !== undefined &&
-										tokenId < auctionData?.auctionId &&
-										setTokenId(tokenId + 1);
-								}}
-							>
-								→
-							</button>
+		<ComponentWrapper theme={theme}>
+			<div id="auction">
+				<div className="flex justify-center mx-auto">
+					<div className="w-full flex flex-col md:flex-row md:gap-10 items-center">
+						<div className="md:w-3/5 aspect-square">
+							{token?.imageUrl && <img src={token.imageUrl} className="rounded-lg w-full" alt="" />}
 						</div>
-						<h1 className="text-4xl md:text-5xl bold text-gray-800">
-							{token?.name ? token?.name : <></>}
-						</h1>
-						{auctionData?.auctionId === tokenId ? (
-							<>
-								<div className="flex gap-5">
-									<div className="my-5">
-										<p className="text-md text-gray-700 opacity-70">highest bid</p>
-										<p className="text-3xl font-bold text-gray-800">Ξ {auctionData?.highestBid}</p>
-										{auctionData?.highestBidder && (
-											<div className="text-md text-gray-700 truncate w-full mt-2">
-												<Account address={auctionData?.highestBidder} chainId={dao.chainId} />
-											</div>
-										)}
-									</div>
-									<div className="my-5">
-										<p className="text-md text-gray-700 opacity-70">auction ends</p>
-										<button
-											className="font-bold text-gray-800"
-											onClick={() => {
-												toggleCountdown(!showCountdown);
-											}}
-										>
-											{showCountdown ? (
-												auctionData?.endTime ? (
-													<span className="text-3xl">
-														<Countdown
-															renderer={countdownRenderer}
-															daysInHours={true}
-															date={auctionData.endTime}
-														/>
-													</span>
+						<div className="mt-10 mb-5 w-full sm:w-3/4 md:w-2/5">
+							<div className="flex flex-row items-center w-full gap-2 mb-3 md:mb-6">
+								<button
+									className="bg-gray-400 opacity-70 hover:opacity-100 text-text-base font-bold py-1 px-2 rounded-full text-md aspect-square disabled:opacity-25 leading-none"
+									disabled={!tokenId || tokenId <= 0}
+									onClick={() => {
+										tokenId !== undefined && tokenId >= 0 && setTokenId(tokenId - 1);
+									}}
+								>
+									←
+								</button>
+								<button
+									className="bg-slate-400 opacity-70 hover:opacity-100 text-text-base font-bold py-1 px-2 rounded-full text-md aspect-square disabled:opacity-25 leading-none"
+									disabled={tokenId === auctionData?.auctionId}
+									onClick={() => {
+										tokenId !== undefined &&
+											tokenId < auctionData?.auctionId &&
+											setTokenId(tokenId + 1);
+									}}
+								>
+									→
+								</button>
+							</div>
+							<h1 className="text-4xl md:text-5xl bold text-textBase">
+								{token?.name ? token?.name : <></>}
+							</h1>
+							{auctionData?.auctionId === tokenId ? (
+								<>
+									<div className="flex gap-5">
+										<div className="my-5">
+											<p className="text-md text-text-base opacity-40">highest bid</p>
+											<p className="text-3xl font-bold text-text-base">
+												Ξ {auctionData?.highestBid}
+											</p>
+										</div>
+										<div className="my-5">
+											<p className="text-md text-text-base opacity-40">auction ends</p>
+											<button
+												className="font-bold text-text-base text-left"
+												onClick={() => {
+													toggleCountdown(!showCountdown);
+												}}
+											>
+												{showCountdown ? (
+													auctionData?.endTime && (
+														<span className="text-3xl">
+															<Countdown
+																renderer={countdownRenderer}
+																daysInHours={true}
+																date={auctionData.endTime}
+															/>
+														</span>
+													)
 												) : (
-													<></>
-												)
-											) : (
-												<>
-													<span className="text-left text-lg block">
-														{new Date(auctionData?.endTime).toLocaleDateString('en-US')}
-													</span>
-													<span className="text-left text-lg">
-														{new Date(auctionData?.endTime).toLocaleTimeString('en-US')}
-													</span>
-												</>
-											)}
-										</button>
+													<>
+														<span className="text-left text-lg">
+															{date} {time}
+														</span>
+														<span className="text-left text-lg"></span>
+													</>
+												)}
+											</button>
+										</div>
 									</div>
-								</div>
-							</>
-						) : (
-							<>
-								{auctionData?.highestBidder && (
-									<div className="my-5">
-										<p className="text-md text-gray-700 opacity-70">owned by</p>
-										<p className="text-3xl font-bold text-gray-800 truncate w-full max-w-[300px]">
-											<Account address={token.owner} chainId={dao.chainId} />
-										</p>
-									</div>
-								)}
-							</>
-						)}
-						{tokenId === auctionData?.auctionId && auctionData?.highestBid && (
-							<BidForm tokenId={auctionData?.auctionId} formData={formData} dao={dao} />
-						)}
+								</>
+							) : (
+								<>
+									{auctionData?.highestBidder && (
+										<div className="my-5">
+											<p className="text-md text-text-base opacity-40">owned by</p>
+											<p className="text-3xl font-bold text-text-base truncate w-full max-w-[300px]">
+												<Account address={token.owner} chainId={dao.chainId} />
+											</p>
+										</div>
+									)}
+								</>
+							)}
+							{tokenId && tokenId === auctionData?.auctionId && (
+								<>
+									<BidForm
+										tokenId={auctionData?.auctionId}
+										formData={formData}
+										dao={dao}
+										theme={theme}
+									/>
+									{auctionData?.highestBid !== '0.00' && (
+										<div className="my-5">
+											<p className="text-1xl font-bold text-text-base truncate w-full max-w-[300px] flex flex-row gap-3 justify-between">
+												<Account address={auctionData?.highestBidder} chainId={dao.chainId} />
+												<span className="text-md text-text-base opacity-40">
+													Ξ {auctionData.highestBid}
+												</span>
+											</p>
+										</div>
+									)}
+								</>
+							)}
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
+		</ComponentWrapper>
 	);
 };

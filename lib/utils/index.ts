@@ -4,7 +4,19 @@ export const logWarning = (type: string, collection: string, chain: string) => {
 	);
 };
 
-export const truncateAddress = (address: string) => {
+export const trunc = (address: string) => {
 	if (!address) return '';
 	return address.substring(0, 6) + '...' + address.substring(address.length - 4);
+};
+
+export const fetchEnsData = async (address: string) => {
+	if (!address) return {};
+	try {
+		const response = await fetch('https://api.ensideas.com/ens/resolve/' + address);
+		const data = await response.json();
+		return data;
+	} catch (err) {
+		console.error(err);
+		return {};
+	}
 };

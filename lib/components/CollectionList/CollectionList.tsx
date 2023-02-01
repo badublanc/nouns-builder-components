@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { DaoInfo, TokenData } from '../../types';
+import { DaoInfo, Theme, TokenData } from '../../types';
 import { useCollection } from '../..';
 import { NFT } from './NFT';
+import ComponentWrapper from '../ComponentWrapper';
 
 export const CollectionList = ({ dao, opts }: { dao: DaoInfo; opts: DOMStringMap }) => {
-	const collection = useCollection(dao);
-	const itemsPerRow = opts.itemsPerRow || 6;
+	const theme = opts?.theme as Theme;
+	const rows = Number(opts.rows) || 3;
+	const itemsPerRow = Number(opts.itemsPerRow) || 5;
 	const sortDirection = opts.sortDirection?.toLocaleUpperCase() || 'ASC';
+	const hideLabels = opts?.hideLabels === 'true';
+	// const showDetails = opts?.showDetails === 'true';
+	const collection = useCollection(dao);
 
 	const [tokens, setTokens] = useState<TokenData[]>([]);
 
@@ -21,23 +26,23 @@ export const CollectionList = ({ dao, opts }: { dao: DaoInfo; opts: DOMStringMap
 	}, [collection]);
 
 	return (
-		<div id="collection" className={`mx-auto grid grid-cols-2 md:grid-cols-4 gap-5 md:gap-2`}>
-			{tokens?.length ? (
-				tokens.map((token) => {
+		<ComponentWrapper theme={theme}>
+			<div id="collection" className={`mx-auto grid gap-8 grid-cols-2 md:grid-cols-${itemsPerRow}`}>
+				{tokens?.map((token, i) => {
+					if (rows && i >= rows * itemsPerRow) return null;
 					return (
-						<NFT
-							key={token.id}
-							token={token}
-							showDetails={false}
-							dao={dao}
-							darkMode={false}
-							inCollectionList={true}
-						/>
+						<a href={`https://nouns.build/${dao.contracts.collection}/${token.id}`} key={token.id}>
+							<NFT
+								token={token}
+								dao={dao}
+								showDetails={false}
+								inCollectionList={true}
+								hideLabels={hideLabels}
+							/>
+						</a>
 					);
-				})
-			) : (
-				<></>
-			)}
-		</div>
+				})}
+			</div>
+		</ComponentWrapper>
 	);
 };

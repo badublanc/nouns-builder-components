@@ -1,10 +1,12 @@
 import './index.css';
+import '@rainbow-me/rainbowkit/styles.css';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import { WagmiConfig, createClient, configureChains, mainnet, goerli } from 'wagmi';
+import { publicProvider } from 'wagmi/providers/public';
 import { infuraProvider } from 'wagmi/providers/infura';
-import { ConnectKitProvider, getDefaultClient } from 'connectkit';
+import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { BuilderDAO } from '../lib';
 
 const config = document.querySelector('[data-builder-config]') as HTMLElement;
@@ -22,18 +24,20 @@ if (!infuraId) {
 
 const { chains, provider, webSocketProvider } = configureChains(
 	[chain === 'GOERLI' ? goerli : mainnet],
-	[infuraProvider({ apiKey: infuraId })]
+	[infuraProvider({ apiKey: infuraId }), publicProvider()]
 );
 
-const client = createClient(
-	getDefaultClient({
-		appName: 'DAO Components',
-		autoConnect: true,
-		chains,
-		provider,
-		webSocketProvider,
-	})
-);
+const { connectors } = getDefaultWallets({
+	appName: 'DAO Components',
+	chains,
+});
+
+const wagmiClient = createClient({
+	autoConnect: true,
+	connectors,
+	provider,
+	webSocketProvider,
+});
 
 const components = document.querySelectorAll('[data-builder-component]');
 
@@ -43,16 +47,15 @@ if (!components.length) {
 
 for (const component of components) {
 	const root = component as HTMLElement;
-	const config = root.dataset;
 
 	ReactDOM.createRoot(root).render(
 		<React.StrictMode>
-			<WagmiConfig client={client}>
-				<ConnectKitProvider>
+			<WagmiConfig client={wagmiClient}>
+				<RainbowKitProvider chains={chains}>
 					<BuilderDAO collection={collection} chain={chain}>
-						<App config={config} />
+						<App config={root.dataset} />
 					</BuilderDAO>
-				</ConnectKitProvider>
+				</RainbowKitProvider>
 			</WagmiConfig>
 		</React.StrictMode>
 	);
