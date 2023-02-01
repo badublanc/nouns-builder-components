@@ -34,6 +34,11 @@ export type DaoInfo = {
 	};
 };
 
+export type DaoMember = {
+	address: string;
+	tokenIds: number[];
+};
+
 export type AuctionData = {
 	auctionId: number;
 	chain: DaoConfig['chain'];
@@ -73,7 +78,28 @@ export type TokenData = {
 	};
 };
 
-export type DaoMember = {
-	address: string;
-	tokenIds: number[];
+export type ProposalData = {
+	id: string;
+	number: number;
+	created: number;
+	proposer: string;
+	title: string;
+	description: string;
+	status: string;
+	quorum: number;
+	voteStart: number;
+	voteEnd: number;
+	tally: {
+		for: number;
+		against: number;
+		abstain: number;
+	};
+	votes: ProposalVote[];
+};
+
+export type ProposalVote = {
+	voter: string;
+	weight: number;
+	support: string;
+	reason: string;
 };

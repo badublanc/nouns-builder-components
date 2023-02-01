@@ -9,6 +9,7 @@ export const MemberList = ({ dao, opts }: { dao: DaoInfo; opts?: DOMStringMap })
 	const theme = opts?.theme as Theme;
 	const rows = Number(opts?.rows) || 3;
 	const perRow = 6;
+
 	const members = useMembers(dao);
 
 	return (
