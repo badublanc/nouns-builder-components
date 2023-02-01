@@ -27,5 +27,5 @@ export const Avatar = ({ address, chainId }: AvatarConfig) => {
 		else setEnsAvatar('');
 	}, [address]);
 
-	return <img src={ensAvatar || zorbImage} className="w-full rounded-full" />;
+	return <img src={ensAvatar || zorbImage} className="w-full rounded-full aspect-square" />;
 };
