@@ -40,7 +40,7 @@ export const BidForm = ({ tokenId, formData, dao, theme }: any) => {
 	return (
 		<form
 			onSubmit={placeBid}
-			className={'mt-4 md:mt-8 flex flex-col sm:flex-row gap-5 w-full'}
+			className={'mt-4 md:mt-8 flex flex-col font-bold sm:flex-row gap-5 w-full'}
 			ref={ref}
 		>
 			<div className="relative mb-2 w-full flex-grow">

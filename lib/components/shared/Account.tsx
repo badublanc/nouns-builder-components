@@ -36,7 +36,10 @@ export const Account = ({ address, chainId, hideAvatar = false }: AccountConfig)
 				</span>
 			)}
 			<span
-				className={cx('w-full overflow-hidden overflow-ellipsis', !hideAvatar === true && 'pl-7')}
+				className={cx(
+					'w-full overflow-hidden overflow-ellipsis font-bold',
+					!hideAvatar === true && 'pl-7'
+				)}
 			>
 				{ensName ? ensName : trunc(address)}
 			</span>

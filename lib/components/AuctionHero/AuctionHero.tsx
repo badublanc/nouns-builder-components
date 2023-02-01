@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { constants } from 'ethers';
 import Countdown, { CountdownRenderProps } from 'react-countdown';
 import type { DaoInfo, Theme } from '../../types';
 import { useAuction, useToken } from '../..';
@@ -57,7 +58,7 @@ export const AuctionHero = ({ dao, opts }: { dao: DaoInfo; opts?: DOMStringMap }
 						<div className="mt-10 mb-5 w-full sm:w-3/4 md:w-2/5">
 							<div className="flex flex-row items-center w-full gap-2 mb-3 md:mb-6">
 								<button
-									className="bg-gray-400 opacity-70 hover:opacity-100 text-text-base font-bold py-1 px-2 rounded-full text-md aspect-square disabled:opacity-25 leading-none"
+									className="bg-gray-400 opacity-70 hover:opacity-100 text-base font-bold py-1 px-2 rounded-full text-md aspect-square disabled:opacity-25 leading-none"
 									disabled={!tokenId || tokenId <= 0}
 									onClick={() => {
 										tokenId !== undefined && tokenId >= 0 && setTokenId(tokenId - 1);
@@ -66,7 +67,7 @@ export const AuctionHero = ({ dao, opts }: { dao: DaoInfo; opts?: DOMStringMap }
 									←
 								</button>
 								<button
-									className="bg-slate-400 opacity-70 hover:opacity-100 text-text-base font-bold py-1 px-2 rounded-full text-md aspect-square disabled:opacity-25 leading-none"
+									className="bg-slate-400 opacity-70 hover:opacity-100 text-base font-bold py-1 px-2 rounded-full text-md aspect-square disabled:opacity-25 leading-none"
 									disabled={tokenId === auctionData?.auctionId}
 									onClick={() => {
 										tokenId !== undefined &&
@@ -77,7 +78,7 @@ export const AuctionHero = ({ dao, opts }: { dao: DaoInfo; opts?: DOMStringMap }
 									→
 								</button>
 							</div>
-							<h1 className="text-4xl md:text-5xl bold text-textBase">
+							<h1 className="text-4xl md:text-5xl font-bold">
 								{token?.name ? token?.name : <></>}
 							</h1>
 							{auctionData?.auctionId === tokenId ? (
@@ -139,7 +140,7 @@ export const AuctionHero = ({ dao, opts }: { dao: DaoInfo; opts?: DOMStringMap }
 										dao={dao}
 										theme={theme}
 									/>
-									{auctionData?.highestBid !== '0.00' && (
+									{auctionData?.highestBidder !== constants.AddressZero && (
 										<div className="my-5">
 											<p className="text-1xl font-bold text-text-base truncate w-full max-w-[300px] flex flex-row gap-3 justify-between">
 												<Account address={auctionData?.highestBidder} chainId={dao.chainId} />
