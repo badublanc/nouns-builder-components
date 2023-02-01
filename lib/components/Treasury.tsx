@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useBalance } from 'wagmi';
 import type { DaoInfo, Theme } from '../types';
 import { applyTheme } from '../themes/utils';
-import { formatEther, parseEther } from 'ethers/lib/utils.js';
 
 export const Treasury = ({ dao, opts }: { dao: DaoInfo; opts?: DOMStringMap }) => {
 	const ref = useRef(null);
@@ -19,8 +18,8 @@ export const Treasury = ({ dao, opts }: { dao: DaoInfo; opts?: DOMStringMap }) =
 				console.error(error);
 				setBalance('0');
 			} else {
-				const balance = formatEther(data?.value || '0');
-				const pIndex = data?.formatted?.indexOf('.');
+				const balance = data?.formatted ?? '0';
+				const pIndex = balance.indexOf('.');
 				if (pIndex && pIndex > 0) setBalance(balance.slice(0, pIndex + 3));
 				else setBalance(balance);
 			}
