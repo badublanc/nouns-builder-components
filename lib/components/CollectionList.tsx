@@ -31,7 +31,10 @@ export const CollectionList = ({ dao, opts }: { dao: DaoInfo; opts: DOMStringMap
 				{tokens?.map((token, i) => {
 					if (rows && i >= rows * itemsPerRow) return null;
 					return (
-						<a href={`https://nouns.build/${dao.contracts.collection}/${token.id}`} key={token.id}>
+						<a
+							href={`https://nouns.build/dao/${dao.contracts.collection}/${token.id}`}
+							key={token.id}
+						>
 							<NFT
 								token={token}
 								dao={dao}
