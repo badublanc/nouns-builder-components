@@ -6,10 +6,10 @@ import { fetchEnsData } from '../../utils';
 
 type AvatarConfig = {
 	address: string;
-	chainId: DaoInfo['chainId'];
+	chainId?: DaoInfo['chainId'];
 };
 
-export const Avatar = ({ address, chainId }: AvatarConfig) => {
+export const Avatar = ({ address }: AvatarConfig) => {
 	const [ensAvatar, setEnsAvatar] = useState<string>('');
 
 	const zorbImage = useMemo(() => {
