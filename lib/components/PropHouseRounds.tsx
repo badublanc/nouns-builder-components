@@ -27,11 +27,11 @@ export const PropHouseRounds = ({ dao, opts }: { dao: DaoInfo; opts?: DOMStringM
 			<div id="ph-rounds" className={`mx-auto grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-5`}>
 				{rounds.map((round, i) => {
 					const communitySlug = round.communityName.toLowerCase().replaceAll(' ', '-');
-					const propSlug = round.title.toLowerCase().replaceAll(' ', '-');
+					const roundSlug = round.title.toLowerCase().replaceAll(' ', '-');
 					if (rows && i >= rows * itemsPerRow) return null;
 					return (
 						<a
-							href={`https://prop.house/${communitySlug}/${propSlug}`}
+							href={`https://prop.house/${communitySlug}/${roundSlug}`}
 							target="_blank"
 							rel="noreferrer"
 							key={i}

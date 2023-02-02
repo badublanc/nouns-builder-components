@@ -1,4 +1,4 @@
-import type { PHRoundData } from '../types';
+import type { PHRoundData, PHProposal } from '../types';
 import { fetchDataWithQuery } from './utils';
 import { logWarning } from '../utils';
 
@@ -49,7 +49,15 @@ const formatQueryData = (data: any): PHRoundData[] | null => {
 			currency: round?.currencyType,
 			description: round?.description,
 			proposalCount: round?.proposals?.length ?? 0,
-			proposalIds: round?.proposals?.map((p: any): number => p.id),
+			proposals: round?.proposals?.map((prop: any): PHProposal => {
+				return {
+					id: prop?.id,
+					created: new Date(prop?.createdDate).valueOf(),
+					proposer: prop?.address,
+					title: prop?.title,
+					tldr: prop?.tldr,
+				};
+			}),
 		};
 	});
 
@@ -59,7 +67,7 @@ const formatQueryData = (data: any): PHRoundData[] | null => {
 const query = `query GetRounds($collection: String!) {
   findByAddress(address: $collection) {
     id
-		name
+    name
     auctions {
       id
       status
@@ -73,6 +81,10 @@ const query = `query GetRounds($collection: String!) {
       description
       proposals {
         id
+        createdDate
+        address
+        title
+        tldr
       }
     }
   }

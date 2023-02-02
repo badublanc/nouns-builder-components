@@ -118,5 +118,13 @@ export type PHRoundData = {
 	currency: string;
 	description: string;
 	proposalCount: number;
-	proposalIds: number[];
+	proposals: PHProposal[];
+};
+
+export type PHProposal = {
+	id: number;
+	created: number;
+	proposer: string;
+	title: string;
+	tldr: string;
 };

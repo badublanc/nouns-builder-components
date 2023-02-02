@@ -4,6 +4,7 @@ import {
 	AuctionHero,
 	CollectionList,
 	MemberList,
+	PropHouseProps,
 	PropHouseRounds,
 	ProposalList,
 	Treasury,
@@ -28,6 +29,8 @@ const component = (name: string, dao: DaoInfo, config: DOMStringMap) => {
 			return <ConnectButton />;
 		case 'member-list':
 			return <MemberList dao={dao} opts={config} />;
+		case 'prop-house-props':
+			return <PropHouseProps dao={dao} opts={config} />;
 		case 'prop-house-rounds':
 			return <PropHouseRounds dao={dao} opts={config} />;
 		case 'proposal-list':

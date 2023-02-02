@@ -8,7 +8,7 @@ type PropHouseRoundConfig = {
 	round: PHRoundData;
 };
 
-const getStatusColor = (status: string) => {
+const getStatusColorClasses = (status: string) => {
 	switch (status.toLowerCase()) {
 		case 'proposing':
 			return 'bg-blue-200 text-blue-500';
@@ -30,7 +30,7 @@ export const PropHouseRound = ({ round }: PropHouseRoundConfig) => {
 		currency,
 		proposalEndTime,
 	} = round;
-	const statusColor = getStatusColor(status);
+	const statusColor = getStatusColorClasses(status);
 
 	return (
 		<div className="h-full border border-theme-border p-3 md:p-5 rounded-lg hover:shadow-md shadow-none transition-shadow">
