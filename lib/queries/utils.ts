@@ -1,6 +1,10 @@
-export const fetchDataWithQuery = async (query: string, variables: Record<string, any> = {}) => {
+export const fetchDataWithQuery = async (
+	query: string,
+	variables: Record<string, any> = {},
+	url: string = 'https://api.zora.co/graphql'
+) => {
 	try {
-		const response = await fetch('https://api.zora.co/graphql', {
+		const response = await fetch(url, {
 			method: 'post',
 			headers: { 'Content-Type': 'application/json; charset=utf-8' },
 			body: JSON.stringify({ query, variables }),

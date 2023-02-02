@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 dayjs.extend(relativeTime);
 
-export const logWarning = (type: string, collection: string, chain: string) => {
+export const logWarning = (type: string, collection: string, chain: string = 'MAINNET') => {
 	console.warn(
 		`BUILDER: ${type}. Double check that the collection address and chain are correct or retry the query.\n\ncollection: ${collection}\nchain: ${chain}`
 	);

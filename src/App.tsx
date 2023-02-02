@@ -1,6 +1,14 @@
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import type { DaoInfo } from '../lib/types';
-import { AuctionHero, CollectionList, MemberList, ProposalList, Treasury, useDao } from '../lib';
+import {
+	AuctionHero,
+	CollectionList,
+	MemberList,
+	PropHouseRounds,
+	ProposalList,
+	Treasury,
+	useDao,
+} from '../lib';
 
 export default function App({ config }: { config: DOMStringMap }) {
 	const dao = useDao();
@@ -20,6 +28,8 @@ const component = (name: string, dao: DaoInfo, config: DOMStringMap) => {
 			return <ConnectButton />;
 		case 'member-list':
 			return <MemberList dao={dao} opts={config} />;
+		case 'prop-house-rounds':
+			return <PropHouseRounds dao={dao} opts={config} />;
 		case 'proposal-list':
 			return <ProposalList dao={dao} opts={config} />;
 		case 'treasury':

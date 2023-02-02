@@ -103,3 +103,20 @@ export type ProposalVote = {
 	support: string;
 	reason: string;
 };
+
+export type PHRoundData = {
+	communityId: number;
+	communityName: string;
+	id: number;
+	status: string;
+	title: string;
+	startTime: number;
+	proposalEndTime: number;
+	votingEndTime: number;
+	numWinners: number;
+	fundingAmount: number;
+	currency: string;
+	description: string;
+	proposalCount: number;
+	proposalIds: number[];
+};

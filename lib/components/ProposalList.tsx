@@ -6,7 +6,7 @@ import { ProposalListItem } from './ProposalListItem';
 
 export const ProposalList = ({ dao, opts }: { dao: DaoInfo; opts?: DOMStringMap }) => {
 	const theme = opts?.theme as Theme;
-	const sortDirection = opts?.sortDirection?.toUpperCase() ?? 'DESC';
+	const sortDirection = opts?.sortDirection?.toUpperCase() || 'DESC';
 	const maxProposals = Number(opts?.max) || 10;
 
 	const props = useProposals(dao);
