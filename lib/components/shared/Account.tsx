@@ -41,7 +41,7 @@ export const Account = ({ address, chainId, hideAvatar = false }: AccountConfig)
 					!hideAvatar === true && 'pl-7'
 				)}
 			>
-				{ensName ? ensName : trunc(address)}
+				{ensName || trunc(address)}
 			</span>
 		</a>
 	);

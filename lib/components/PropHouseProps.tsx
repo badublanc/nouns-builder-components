@@ -13,7 +13,7 @@ export const PropHouseProps = ({ dao, opts }: { dao: DaoInfo; opts?: DOMStringMa
 	const theme = opts?.theme as Theme;
 	const roundName = opts?.round;
 	const format = (opts?.format as 'grid' | 'list') || 'list';
-	// const sortDirection = opts?.sortDirection?.toUpperCase() || 'DESC';
+	const sortDirection = opts?.sortDirection?.toUpperCase() || 'DESC';
 	const maxProposals = Number(opts?.max) || 12;
 
 	const roundData = usePropHouseRounds(dao);
@@ -22,17 +22,22 @@ export const PropHouseProps = ({ dao, opts }: { dao: DaoInfo; opts?: DOMStringMa
 
 	useEffect(() => {
 		if (roundData.length) {
+			let round: PHRoundData = {} as PHRoundData;
+
 			if (roundName) {
-				const round = roundData.find((r) => r.title === roundName);
-				if (round) setRound(round);
-				else setRound(roundData[0]);
-			} else {
-				setRound(roundData[0]);
+				const index = roundData.findIndex((r) => r.title === roundName);
+				if (index >= 0) round = roundData[index];
 			}
 
-			setProps(round?.proposals || []);
+			if (!round.id) round = roundData[0];
+
+			if (sortDirection === 'ASC' && Date.now() < round?.votingEndTime) {
+				setProps(round.proposals.sort((a, b) => b.created - a.created));
+			} else setProps(round.proposals.sort((a, b) => a.created - b.created));
+
+			setRound(round);
 		}
-	}, [roundName, roundData]);
+	}, [roundName, roundData, sortDirection]);
 
 	return (
 		<ComponentWrapper theme={theme}>
@@ -50,7 +55,6 @@ export const PropHouseProps = ({ dao, opts }: { dao: DaoInfo; opts?: DOMStringMa
 								rel="noreferrer"
 								key={i}
 							>
-								{/* best way to determine if winner? */}
 								<PropHouseProp prop={prop} format={format} isWinner={isWinner} />
 							</a>
 						);
