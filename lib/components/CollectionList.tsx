@@ -22,7 +22,7 @@ export const CollectionList = ({ dao, opts }: { dao: DaoInfo; opts: DOMStringMap
 				setTokens(sorted);
 			} else setTokens(collection);
 		}
-	}, [collection]);
+	}, [collection, sortDirection]);
 
 	return (
 		<ComponentWrapper theme={theme}>

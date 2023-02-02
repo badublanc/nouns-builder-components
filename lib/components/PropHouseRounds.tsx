@@ -20,7 +20,7 @@ export const PropHouseRounds = ({ dao, opts }: { dao: DaoInfo; opts?: DOMStringM
 				setRounds(sorted);
 			} else setRounds(roundData);
 		}
-	}, [roundData]);
+	}, [roundData, sortDirection]);
 
 	return (
 		<ComponentWrapper theme={theme}>

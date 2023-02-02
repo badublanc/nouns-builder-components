@@ -20,7 +20,7 @@ export const ProposalList = ({ dao, opts }: { dao: DaoInfo; opts?: DOMStringMap 
 				setProposals(sorted);
 			} else setProposals(props);
 		}
-	}, [props]);
+	}, [props, sortDirection]);
 
 	return (
 		<ComponentWrapper theme={theme}>
