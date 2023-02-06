@@ -24,6 +24,7 @@ export default defineConfig({
 		},
 	},
 	build: {
+		outDir: './dist/dist',
 		rollupOptions: {
 			plugins: [rollupNodePolyFill()],
 			output: {

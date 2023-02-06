@@ -12,8 +12,8 @@
 	"types": "./index.d.ts",
 	"scripts": {
 		"dev": "vite",
-		"build:embed": "tsc && vite build",
-		"build:pkg": "tsup",
+		"bundle": "tsup && yarn build",
+		"build": "tsc && vite build",
 		"watch:pkg": "tsup --watch",
 		"preview": "vite preview"
 	},
@@ -52,12 +52,16 @@
 		"vite": "^4.0.0",
 		"wagmi": "^0.11.2"
 	},
+	"exports": {
+		".": "./index.js"
+	},
 	"keywords": [
 		"nouns",
 		"nouns builder",
 		"zora",
 		"builderdao",
 		"web3",
-		"ethereum"
+		"ethereum",
+		"cloudnouns"
 	]
 }
