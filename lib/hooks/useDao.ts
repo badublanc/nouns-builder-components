@@ -1,91 +1,61 @@
-import type { DaoConfig, DaoInfo } from '../types';
 import React, { useContext, useEffect, useState } from 'react';
+import { useContractRead } from 'wagmi';
+import type { DaoInfo } from '../types';
 import { DaoContext } from '../context';
-import { fetchDataWithQuery, logWarning } from '../utils';
+import { fetchDaoData } from '../queries';
+import { TokenABI } from '../abis';
 
-export const useDao = (config?: Partial<DaoConfig>): DaoInfo | undefined => {
+type DaoURI = {
+	name: string;
+	description: string;
+	imageUrl: string;
+	website: string;
+};
+
+const ipfsGateway = 'https://gateway.pinata.cloud/ipfs/';
+
+export const useDao = (): DaoInfo | null => {
 	const ctx = useContext(DaoContext);
-	const defaultData = {} as DaoInfo;
 
-	const [collection, setCollection] = useState<string>(config?.collection || ctx.collection || '');
-	const [chain, setChain] = useState<DaoConfig['chain']>(config?.chain || ctx.chain || 'MAINNET');
-	const [data, setData] = useState<DaoInfo>();
+	const [apiData, setApiData] = useState<Partial<DaoInfo>>();
+	const [contractUri, setContractUri] = useState<DaoURI>();
+
+	useContractRead({
+		enabled: Boolean(ctx.collection),
+		address: ctx.collection as `0x${string}`,
+		chainId: ctx.chain === 'GOERLI' ? 5 : 1,
+		abi: TokenABI,
+		functionName: 'contractURI',
+		onSuccess(data) {
+			const uri = JSON.parse(window.atob(data.split(',')[1]));
+			if (uri?.image) uri.image = uri.image.replace('ipfs://', ipfsGateway);
+
+			const daoUri: DaoURI = {
+				name: uri?.name ?? '',
+				description: uri?.description ?? '',
+				imageUrl: uri?.image ?? '',
+				website: uri?.external_url ?? '',
+			};
+
+			setContractUri(daoUri);
+		},
+		onError(err) {
+			console.error(err);
+		},
+	});
 
 	useEffect(() => {
 		const fetchData = async () => {
-			const data = await fetchDataWithQuery(query, { collection, chain });
-			const clean = formatData(data, chain);
-			if (clean) setData(clean);
+			const { collection, chain } = ctx;
+			const data = await fetchDaoData({ collection, chain });
+			if (data) setApiData(data);
 			else {
-				logWarning('no_data', collection, chain);
-				setData(defaultData);
+				console.error('dao data not returned from zora');
 			}
 		};
 
-		if (collection && chain) fetchData();
-	}, [collection, chain]);
+		if (ctx.collection && ctx.chain) fetchData();
+	}, [ctx]);
 
-	useEffect(() => {
-		if (config?.collection) setCollection(config.collection);
-		if (config?.chain) setChain(config.chain);
-	}, [config]);
-
-	const changeDao = ({ collection, chain }: Partial<DaoConfig>) => {
-		if (collection) setCollection(collection);
-		if (chain) setChain(chain);
-	};
-
-	return data;
+	return contractUri && apiData ? ({ ...contractUri, ...apiData } as DaoInfo) : null;
 };
-
-const formatData = (data: any, chain: DaoConfig['chain']): DaoInfo | null => {
-	const { aggregateStat: stats } = data?.data;
-	const info = data?.data?.nouns?.nounsDaos?.nodes[0];
-
-	if (!info) return null;
-
-	return {
-		name: info?.name,
-		symbol: info?.symbol,
-		owners: stats?.ownerCount,
-		totalSupply: stats?.nftCount,
-		contracts: {
-			auction: info?.auctionAddress,
-			collection: info?.collectionAddress,
-			governor: info?.governorAddress,
-			metadata: info?.metadataAddress,
-			treasury: info?.treasuryAddress,
-		},
-		chain,
-		chainId: chain === 'MAINNET' ? 1 : 5,
-	};
-};
-
-const query = `query GetDAO($collection: [String!], $chain: Chain!) {
-  nouns {
-    nounsDaos(
-      where: {collectionAddresses: $collection}
-      networks: {network: ETHEREUM, chain: $chain}
-    ) {
-      nodes {
-        name
-        symbol
-        auctionAddress
-        collectionAddress
-        governorAddress
-        metadataAddress
-        treasuryAddress
-      }
-    }
-  }
-  aggregateStat {
-    nftCount(
-      networks: {network: ETHEREUM, chain: $chain}
-      where: {collectionAddresses: $collection}
-    )
-    ownerCount(
-      networks: {network: ETHEREUM, chain: $chain}
-      where: {collectionAddresses: $collection}
-    )
-  }
-}`;

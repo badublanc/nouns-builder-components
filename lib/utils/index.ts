@@ -1,35 +1,31 @@
-export const logWarning = (type: string, collection: string, chain: string) => {
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+dayjs.extend(relativeTime);
+
+export const logWarning = (type: string, collection: string, chain: string = 'MAINNET') => {
 	console.warn(
-		`BUILDER: ${type}. Double check that the collection address and chain are correct.\n\ncollection: ${collection}\nchain: ${chain}`
+		`BUILDER: ${type}. Double check that the collection address and chain are correct or retry the query.\n\ncollection: ${collection}\nchain: ${chain}`
 	);
 };
 
-export const truncateAddress = (address: string) => {
+export const trunc = (address: string) => {
 	if (!address) return '';
 	return address.substring(0, 6) + '...' + address.substring(address.length - 4);
 };
 
-export const fetchDataWithQuery = async (query: string, variables: Record<string, any> = {}) => {
+export const fetchEnsData = async (address: string) => {
+	if (!address) return {};
 	try {
-		const response = await fetch('https://api.zora.co/graphql', {
-			method: 'post',
-			headers: { 'Content-Type': 'application/json; charset=utf-8' },
-			body: JSON.stringify({ query, variables }),
-		});
-		return await response.json();
+		const response = await fetch('https://api.ensideas.com/ens/resolve/' + address);
+		const data = await response.json();
+		return data;
 	} catch (err) {
 		console.error(err);
-		return null;
+		return {};
 	}
 };
 
-export const fetchDataWithQueries = async (
-	queries: string[],
-	variables: Record<string, any> = {}
-) => {
-	return await Promise.all(
-		queries.map(async (query) => {
-			return await fetchDataWithQuery(query, variables);
-		})
-	);
+export const relative = (timestamp: number) => {
+	if (!timestamp) return '';
+	return dayjs.unix(timestamp / 1000).fromNow(false);
 };

@@ -1,8 +1,8 @@
-export const subscribe = (eventName, listener) => {
+export const subscribe = (eventName: any, listener: (this: Document, ev: any) => any) => {
 	document.addEventListener(eventName, listener);
 };
 
-export const unsubscribe = (eventName, listener?) => {
+export const unsubscribe = (eventName: any, listener: (this: Document, ev: any) => any) => {
 	document.removeEventListener(eventName, listener);
 };
 

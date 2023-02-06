@@ -1,11 +1,44 @@
-import { BuilderDAO, AuctionHero } from '../lib';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
+import type { DaoInfo } from '../lib/types';
+import {
+	AuctionHero,
+	CollectionList,
+	MemberList,
+	PropHouseProps,
+	PropHouseRounds,
+	ProposalList,
+	Treasury,
+	useDao,
+} from '../lib';
 
-const App = () => {
-	return (
-		<BuilderDAO collection="0x73e769fcd28e66c43f785f5479b4ba8ef9886863" chain="GOERLI">
-			<AuctionHero />
-		</BuilderDAO>
-	);
+export default function App({ config }: { config: DOMStringMap }) {
+	const dao = useDao();
+	const type = config.builderComponent;
+
+	if (!dao || !type) return <></>;
+	return component(type, dao, config);
+}
+
+const component = (name: string, dao: DaoInfo, config: DOMStringMap) => {
+	switch (name) {
+		case 'auction-hero':
+			return <AuctionHero dao={dao} opts={config} />;
+		case 'collection-list':
+			return <CollectionList dao={dao} opts={config} />;
+		case 'connect-button':
+			return <ConnectButton />;
+		case 'member-list':
+			return <MemberList dao={dao} opts={config} />;
+		case 'prop-house-props':
+			return <PropHouseProps dao={dao} opts={config} />;
+		case 'prop-house-rounds':
+			return <PropHouseRounds dao={dao} opts={config} />;
+		case 'proposal-list':
+			return <ProposalList dao={dao} opts={config} />;
+		case 'treasury':
+			return <Treasury dao={dao} opts={config} />;
+		default:
+			console.error('Component type required. See docs for more info.');
+			return <></>;
+	}
 };
-
-export default App;
