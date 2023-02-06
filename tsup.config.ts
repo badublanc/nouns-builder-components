@@ -10,6 +10,7 @@ const config = defineConfig({
 	format: 'esm',
 	clean: true,
 	dts: true,
+	noExternal: ['react-loading-skeleton/dist/skeleton.css'],
 	external: [...Object.keys(PackageJSON.peerDependencies)],
 	async onSuccess() {
 		// copy package.json to dist
