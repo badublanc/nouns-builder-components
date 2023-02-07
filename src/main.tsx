@@ -1,4 +1,4 @@
-import '../lib/styles.css';
+import '../lib/styles/index.css';
 import '@rainbow-me/rainbowkit/styles.css';
 import React from 'react';
 import ReactDOM from 'react-dom/client';

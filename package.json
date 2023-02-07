@@ -55,7 +55,7 @@
 	"exports": {
 		".": [
 			"./index.js",
-			"./styles.css"
+			"./index.css"
 		]
 	},
 	"keywords": [

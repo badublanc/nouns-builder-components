@@ -1,4 +1,4 @@
-import './styles.css';
+import './styles/index.css';
 
 // context
 export { BuilderDAO } from './context';
