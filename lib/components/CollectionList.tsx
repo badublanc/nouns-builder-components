@@ -6,9 +6,9 @@ import ComponentWrapper from './ComponentWrapper';
 
 export const CollectionList = ({ dao, opts }: { dao: DaoInfo; opts: DOMStringMap }) => {
 	const theme = opts?.theme as Theme;
-	const rows = Number(opts.rows) || 3;
-	const itemsPerRow = Number(opts.itemsPerRow) || 5;
-	const sortDirection = opts.sortDirection?.toLocaleUpperCase() || 'ASC';
+	const rows = Number(opts?.rows) || 3;
+	const itemsPerRow = Number(opts?.itemsPerRow) || 5;
+	const sortDirection = opts?.sortDirection?.toLocaleUpperCase() || 'ASC';
 	const hideLabels = opts?.hideLabels === 'true';
 	// const showDetails = opts?.showDetails === 'true';
 	const collection = useCollection(dao);
