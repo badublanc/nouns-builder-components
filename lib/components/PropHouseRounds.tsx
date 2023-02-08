@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { DaoInfo, PHRoundData, Theme } from '../types';
+import { ComponentConfig, PHRoundData } from '../types';
 import { usePropHouseRounds } from '../hooks';
 import ComponentWrapper from './ComponentWrapper';
 import { PropHouseRound } from './shared/PropHouseRound';
 
-export const PropHouseRounds = ({ dao, opts }: { dao: DaoInfo; opts?: DOMStringMap }) => {
-	const theme = opts?.theme as Theme;
+export const PropHouseRounds = ({ dao, opts = {} }: ComponentConfig) => {
+	const theme = opts?.theme;
 	const sortDirection = opts?.sortDirection?.toUpperCase() || 'DESC';
 	const rows = Number(opts?.rows) || 3;
-	const itemsPerRow = 2;
+	const itemsPerRow = Number(opts?.itemsPerRow) || 2;
 
 	const roundData = usePropHouseRounds(dao);
 	const [rounds, setRounds] = useState<PHRoundData[]>([]);

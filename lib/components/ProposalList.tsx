@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { DaoInfo, ProposalData, Theme } from '../types';
+import { ComponentConfig, ProposalData } from '../types';
 import { useProposals } from '../hooks';
 import ComponentWrapper from './ComponentWrapper';
 import { ProposalListItem } from './ProposalListItem';
 
-export const ProposalList = ({ dao, opts }: { dao: DaoInfo; opts?: DOMStringMap }) => {
-	const theme = opts?.theme as Theme;
+export const ProposalList = ({ dao, opts = {} }: ComponentConfig) => {
+	const theme = opts?.theme;
 	const sortDirection = opts?.sortDirection?.toUpperCase() || 'DESC';
 	const maxProposals = Number(opts?.max) || 10;
 

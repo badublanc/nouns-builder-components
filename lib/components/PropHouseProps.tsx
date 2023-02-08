@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import cx from 'classnames';
-import { DaoInfo, PHProposal, PHRoundData, Theme } from '../types';
+import { ComponentConfig, PHProposal, PHRoundData } from '../types';
 import { usePropHouseRounds } from '..';
 import ComponentWrapper from './ComponentWrapper';
 import { PropHouseProp } from './shared/PropHouseProp';
@@ -9,8 +9,8 @@ const getListFormatClasses = (format: string) => {
 	return format === 'grid' ? 'grid grid-cols-1 md:grid-cols-3' : 'flex flex-col';
 };
 
-export const PropHouseProps = ({ dao, opts }: { dao: DaoInfo; opts?: DOMStringMap }) => {
-	const theme = opts?.theme as Theme;
+export const PropHouseProps = ({ dao, opts = {} }: ComponentConfig) => {
+	const theme = opts?.theme;
 	const roundName = opts?.round;
 	const format = (opts?.format as 'grid' | 'list') || 'list';
 	const sortDirection = opts?.sortDirection?.toUpperCase() || 'DESC';
