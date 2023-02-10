@@ -3,6 +3,7 @@ import type { ComponentConfig, TokenData } from '../types';
 import { useCollection } from '..';
 import { NFT } from './NFT';
 import ComponentWrapper from './ComponentWrapper';
+import { useMediaQuery } from 'react-responsive';
 
 export const CollectionList = ({ dao, opts = {} }: ComponentConfig) => {
 	const theme = opts?.theme;
@@ -10,8 +11,8 @@ export const CollectionList = ({ dao, opts = {} }: ComponentConfig) => {
 	const itemsPerRow = Number(opts?.itemsPerRow) || 5;
 	const sortDirection = opts?.sortDirection?.toUpperCase() || 'ASC';
 	const hideLabels = opts?.hideLabels === true || opts?.hideLabels === 'true';
-	// const showDetails = opts?.showDetails == true || opts?.showDetails === 'true';
 	const collection = useCollection(dao);
+	const isMdOrAbove = useMediaQuery({ query: '(min-width: 786px)' });
 
 	const [tokens, setTokens] = useState<TokenData[]>([]);
 
@@ -26,7 +27,15 @@ export const CollectionList = ({ dao, opts = {} }: ComponentConfig) => {
 
 	return (
 		<ComponentWrapper theme={theme}>
-			<div id="collection" className={`mx-auto grid gap-8 grid-cols-2 md:grid-cols-${itemsPerRow}`}>
+			<div
+				id="collection"
+				className={`mx-auto grid gap-8`}
+				style={{
+					gridTemplateColumns: isMdOrAbove
+						? `repeat(${itemsPerRow},minmax(0,1fr))`
+						: 'repeat(3,minmax(0,1fr))',
+				}}
+			>
 				{tokens?.map((token, i) => {
 					if (rows && i >= rows * itemsPerRow) return null;
 					return (
