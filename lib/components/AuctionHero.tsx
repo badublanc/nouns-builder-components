@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { constants } from 'ethers';
 import Countdown, { CountdownRenderProps } from 'react-countdown';
-import type { DaoInfo, Theme } from '../types';
+import type { ComponentConfig } from '../types';
 import { useAuction, useToken } from '..';
 import ComponentWrapper from './ComponentWrapper';
 import { Account } from './shared/Account';
 import { BidForm } from './BidForm';
 
-export const AuctionHero = ({ dao, opts }: { dao: DaoInfo; opts?: DOMStringMap }) => {
-	const theme = opts?.theme as Theme;
+export const AuctionHero = ({ dao, opts = {} }: ComponentConfig) => {
+	const theme = opts?.theme;
 	const { auctionData, formData } = useAuction(dao);
 
 	const [latestTokenId, setLatestTokenId] = useState<number>();

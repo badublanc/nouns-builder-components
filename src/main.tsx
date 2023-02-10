@@ -6,6 +6,7 @@ import App from './App';
 import { WagmiConfig, createClient, configureChains, mainnet, goerli } from 'wagmi';
 import { publicProvider } from 'wagmi/providers/public';
 import { infuraProvider } from 'wagmi/providers/infura';
+import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { BuilderDAO } from '../lib';
 
@@ -13,9 +14,10 @@ const config = document.querySelector('[data-builder-config]') as HTMLElement;
 const chain = (config?.dataset.chain?.toUpperCase() as 'MAINNET' | 'GOERLI') || 'MAINNET';
 const collection = config?.dataset.daoCollection || '';
 const infuraId = config?.dataset.infuraKey || '';
+const alchemyId = config?.dataset.alchemyKey || '';
 
-if (!infuraId) {
-	throw new Error('Infura key required. See docs for more information.');
+if (!infuraId && !alchemyId) {
+	throw new Error('Infura or Alchemy API key required. See docs for more information.');
 } else if (!collection) {
 	throw new Error('Collection address required. See docs for more information.');
 } else if (!['MAINNET', 'GOERLI'].includes(chain)) {
@@ -24,7 +26,10 @@ if (!infuraId) {
 
 const { chains, provider, webSocketProvider } = configureChains(
 	[chain === 'GOERLI' ? goerli : mainnet],
-	[infuraProvider({ apiKey: infuraId }), publicProvider()]
+	[
+		infuraId ? infuraProvider({ apiKey: infuraId }) : alchemyProvider({ apiKey: alchemyId }),
+		publicProvider(),
+	]
 );
 
 const { connectors } = getDefaultWallets({

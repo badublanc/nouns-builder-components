@@ -1,12 +1,12 @@
 import React from 'react';
-import type { DaoInfo, Theme } from '../types';
+import type { ComponentConfig } from '../types';
 import { useMembers } from '../hooks';
 import { Avatar } from './shared/Avatar';
 import { Account } from './shared/Account';
 import ComponentWrapper from './ComponentWrapper';
 
-export const MemberList = ({ dao, opts }: { dao: DaoInfo; opts?: DOMStringMap }) => {
-	const theme = opts?.theme as Theme;
+export const MemberList = ({ dao, opts = {} }: ComponentConfig) => {
+	const theme = opts?.theme;
 	const rows = Number(opts?.rows) || 3;
 	const perRow = 6;
 

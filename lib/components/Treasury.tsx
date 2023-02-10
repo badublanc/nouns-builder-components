@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useBalance } from 'wagmi';
-import type { DaoInfo, Theme } from '../types';
+import type { ComponentConfig } from '../types';
 import { applyTheme } from '../themes/utils';
 
-export const Treasury = ({ dao, opts }: { dao: DaoInfo; opts?: DOMStringMap }) => {
+export const Treasury = ({ dao, opts = {} }: ComponentConfig) => {
 	const ref = useRef(null);
-	const theme = opts?.theme as Theme;
+	const theme = opts?.theme;
 	const address = dao.contracts.treasury;
 
 	const [balance, setBalance] = useState<string>('0');

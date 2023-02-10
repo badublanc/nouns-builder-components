@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { DaoInfo, Theme, TokenData } from '../types';
+import type { ComponentConfig, TokenData } from '../types';
 import { useCollection } from '..';
 import { NFT } from './NFT';
 import ComponentWrapper from './ComponentWrapper';
 
-export const CollectionList = ({ dao, opts }: { dao: DaoInfo; opts: DOMStringMap }) => {
-	const theme = opts?.theme as Theme;
+export const CollectionList = ({ dao, opts = {} }: ComponentConfig) => {
+	const theme = opts?.theme;
 	const rows = Number(opts?.rows) || 3;
 	const itemsPerRow = Number(opts?.itemsPerRow) || 5;
-	const sortDirection = opts?.sortDirection?.toLocaleUpperCase() || 'ASC';
-	const hideLabels = opts?.hideLabels === 'true';
-	// const showDetails = opts?.showDetails === 'true';
+	const sortDirection = opts?.sortDirection?.toUpperCase() || 'ASC';
+	const hideLabels = opts?.hideLabels === true || opts?.hideLabels === 'true';
+	// const showDetails = opts?.showDetails == true || opts?.showDetails === 'true';
 	const collection = useCollection(dao);
 
 	const [tokens, setTokens] = useState<TokenData[]>([]);

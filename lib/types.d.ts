@@ -2,6 +2,16 @@ export type SortDirection = 'ASC' | 'DESC';
 
 export type Theme = 'base' | 'dark' | undefined;
 
+export type ComponentConfig = {
+	dao: DaoInfo;
+	opts: {
+		[key: string]: any;
+	} & {
+		theme?: Theme;
+		sortDirection?: SortDirection;
+	};
+};
+
 export type ThemeConfig = {
 	primary: string;
 	secondary: string;
