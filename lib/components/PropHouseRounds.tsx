@@ -16,7 +16,7 @@ export const PropHouseRounds = ({ dao, opts = {} }: ComponentConfig) => {
 	useEffect(() => {
 		if (roundData.length) {
 			if (sortDirection === 'ASC') {
-				const sorted = [...roundData].sort((a, b) => b.id - a.id);
+				const sorted = [...roundData].sort((a, b) => a.id - b.id);
 				setRounds(sorted);
 			} else setRounds(roundData);
 		}

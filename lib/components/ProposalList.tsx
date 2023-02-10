@@ -16,7 +16,7 @@ export const ProposalList = ({ dao, opts = {} }: ComponentConfig) => {
 	useEffect(() => {
 		if (props.length) {
 			if (sortDirection === 'ASC') {
-				const sorted = [...props].sort((a, b) => b.created - a.created);
+				const sorted = [...props].sort((a, b) => a.created - b.created);
 				setProposals(sorted);
 			} else setProposals(props);
 		}
