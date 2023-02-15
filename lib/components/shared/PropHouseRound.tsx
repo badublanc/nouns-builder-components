@@ -1,11 +1,11 @@
 import React from 'react';
 import cx from 'classnames';
-import type { PHRoundData } from '../../types';
+import type { Round } from 'use-prop-house';
 import { label, pill } from '../../styles/shared';
 import { relative } from '../../utils';
 
 type PropHouseRoundConfig = {
-	round: PHRoundData;
+	round: Round;
 };
 
 const getStatusColorClasses = (status: string) => {
@@ -20,24 +20,14 @@ const getStatusColorClasses = (status: string) => {
 };
 
 export const PropHouseRound = ({ round }: PropHouseRoundConfig) => {
-	const {
-		title,
-		description,
-		status,
-		proposalCount,
-		numWinners,
-		fundingAmount,
-		currency,
-		proposalEndTime,
-	} = round;
+	const { name, description, status, proposals, funding, proposalDeadline } = round;
 	const statusColor = getStatusColorClasses(status);
 
 	return (
 		<div className="h-full border border-theme-border p-3 md:p-5 rounded-lg hover:shadow-md shadow-none transition-shadow">
 			<div>
 				<div className="flex flex-row justify-between mb-3">
-					<p className="font-bold text-xl leading-snug">{title}</p>
-					{/* ph graphql giving error when including status in call. temp statuses for now  */}
+					<p className="font-bold text-xl leading-snug">{name}</p>
 					<p className={cx(pill, statusColor)}>{status}</p>
 				</div>
 				<p className="line-clamp-3 font-normal text-xs md:text-base">{description}</p>
@@ -45,17 +35,17 @@ export const PropHouseRound = ({ round }: PropHouseRoundConfig) => {
 			<div className="flex flex-row gap-3 justify-between pt-3 md:pt-5">
 				<div>
 					<p className={label}>Funding</p>
-					<p className="font-bold">{`${fundingAmount} ${currency} ${String.fromCharCode(
+					<p className="font-bold">{`${funding.amount} ${funding.currency} ${String.fromCharCode(
 						215
-					)} ${numWinners}`}</p>
+					)} ${funding.winners}`}</p>
 				</div>
 				<div>
 					<p className={label}>Prop deadline</p>
-					<p className="font-bold">{relative(proposalEndTime)}</p>
+					<p className="font-bold">{relative(proposalDeadline)}</p>
 				</div>
 				<div>
 					<p className={label}>Proposals</p>
-					<p className="font-bold">{proposalCount}</p>
+					<p className="font-bold">{proposals.length}</p>
 				</div>
 			</div>
 		</div>

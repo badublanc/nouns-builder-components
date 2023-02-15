@@ -1,18 +1,17 @@
 import React from 'react';
 import cx from 'classnames';
-import { PHProposal } from '../../types';
+import type { Round } from 'use-prop-house';
 import { pill, statusColors } from '../../styles/shared';
 import { relative } from '../../utils';
 import { Account } from './Account';
 
 type PropHousePropConfig = {
-	prop: PHProposal;
+	prop: Round['proposals'][number];
 	format: 'grid' | 'list';
-	isWinner: boolean;
 };
 
-export const PropHouseProp = ({ prop, format, isWinner }: PropHousePropConfig) => {
-	const { created, title, tldr, proposer } = prop;
+export const PropHouseProp = ({ prop, format }: PropHousePropConfig) => {
+	const { created, title, summary, proposer, isWinner } = prop;
 
 	return (
 		<div
@@ -23,7 +22,7 @@ export const PropHouseProp = ({ prop, format, isWinner }: PropHousePropConfig) =
 				<p className="font-bold text-xl leading-snug">{title}</p>
 				{isWinner && <p className={cx(pill, statusColors[1])}>Winner</p>}
 			</div>
-			<p className="font-normal line-clamp-2 mb-2 opacity-70">{tldr}</p>
+			<p className="font-normal line-clamp-2 mb-2 opacity-70">{summary}</p>
 
 			<p className="font-normal">
 				<strong>

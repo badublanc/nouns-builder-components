@@ -1,24 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import { ComponentConfig, PHRoundData } from '../types';
-import { usePropHouseRounds } from '../hooks';
+import { useRoundsByHouse, type Round } from 'use-prop-house';
+import { ComponentConfig } from '../types';
 import ComponentWrapper from './ComponentWrapper';
 import { PropHouseRound } from './shared/PropHouseRound';
 
-export const PropHouseRounds = ({ dao, opts = {} }: ComponentConfig) => {
+export const PropHouseRounds = ({ opts = {} }: ComponentConfig) => {
 	const theme = opts?.theme;
+	const houseId = opts?.houseId ? Number(opts?.houseId) : 21;
 	const sortDirection = opts?.sortDirection?.toUpperCase() || 'DESC';
 	const rows = Number(opts?.rows) || 3;
 	const itemsPerRow = Number(opts?.itemsPerRow) || 2;
 
-	const roundData = usePropHouseRounds(dao);
-	const [rounds, setRounds] = useState<PHRoundData[]>([]);
+	const { data: roundData } = useRoundsByHouse({ houseId });
+	const [rounds, setRounds] = useState<Round[]>([]);
 
 	useEffect(() => {
-		if (roundData.length) {
-			if (sortDirection === 'ASC') {
-				const sorted = [...roundData].sort((a, b) => a.id - b.id);
-				setRounds(sorted);
-			} else setRounds(roundData);
+		if (sortDirection === 'ASC') {
+			const sorted = [...roundData].sort((a, b) => a.created - b.created);
+			setRounds(sorted);
+		} else {
+			const sorted = [...roundData].sort((a, b) => b.created - a.created);
+			setRounds(sorted);
 		}
 	}, [roundData, sortDirection]);
 
@@ -26,16 +28,9 @@ export const PropHouseRounds = ({ dao, opts = {} }: ComponentConfig) => {
 		<ComponentWrapper theme={theme}>
 			<div id="ph-rounds" className={`mx-auto grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-5`}>
 				{rounds.map((round, i) => {
-					const communitySlug = round.communityName.toLowerCase().replaceAll(' ', '-');
-					const roundSlug = round.title.toLowerCase().replaceAll(' ', '-');
 					if (rows && i >= rows * itemsPerRow) return null;
 					return (
-						<a
-							href={`https://prop.house/${communitySlug}/${roundSlug}`}
-							target="_blank"
-							rel="noreferrer"
-							key={i}
-						>
+						<a href={round.url} target="_blank" rel="noreferrer" key={round.id}>
 							<PropHouseRound round={round} />
 						</a>
 					);
