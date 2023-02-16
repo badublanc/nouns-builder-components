@@ -1,8 +1,13 @@
 import React, { useEffect, useRef } from 'react';
 import { applyTheme } from '../themes/utils';
 import type { Theme } from '../types';
+import Loading from './shared/Loading';
 
-type Props = { theme?: 'base' | 'dark' | undefined; children: React.ReactNode };
+type Props = {
+	theme?: 'base' | 'dark' | undefined;
+	children: React.ReactNode;
+	isDataLoaded: boolean;
+};
 
 function ComponentWrapper(props: Props) {
 	const ref = useRef(null);
@@ -16,7 +21,7 @@ function ComponentWrapper(props: Props) {
 	}, [theme, ref]);
 	return (
 		<div className={'text-text-base bg-background p-2 md:p-5 rounded-lg'} ref={ref}>
-			{props.children}
+			{!props.isDataLoaded ? <Loading /> : props.children}
 		</div>
 	);
 }
