@@ -4,6 +4,7 @@ import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import type { DaoInfo, TokenData } from '../types';
 import { Account } from './shared/Account';
+import TokenImage from './shared/TokenImage';
 
 type Props = {
 	token: TokenData;
@@ -19,22 +20,8 @@ export const NFT = ({ token, showDetails, dao, inCollectionList, hideLabels }: P
 	return (
 		<div className={cx('flex flex-col', !inCollectionList && 'md:flex-row md:items-center')}>
 			<>
-				<div className={cx('w-full', !inCollectionList && 'md:w-2/3')}>
-					{imageUrl ? (
-						<img
-							src={imageUrl}
-							alt={name}
-							className={cx(
-								'rounded-md w-full',
-								!inCollectionList && 'rounded-b-none !md:rounded-md !md:rounded-r-none'
-							)}
-						/>
-					) : (
-						<Skeleton
-							containerClassName="h-full w-full rounded-md rounded-b-none !md:rounded-md !md:rounded-r-none"
-							className="aspect-square"
-						/>
-					)}
+				<div className={cx('w-full h-full', !inCollectionList && 'md:w-2/3')}>
+					<TokenImage imageUrl={imageUrl} inCollectionList={inCollectionList} />
 				</div>
 				{!hideLabels && (
 					<div

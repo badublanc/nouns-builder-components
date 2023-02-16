@@ -6,6 +6,8 @@ import { useAuction, useToken } from '..';
 import ComponentWrapper from './ComponentWrapper';
 import { Account } from './shared/Account';
 import { BidForm } from './BidForm';
+import Loading from './shared/Loading';
+import TokenImage from './shared/TokenImage';
 
 export const AuctionHero = ({ dao, opts = {} }: ComponentConfig) => {
 	const theme = opts?.theme;
@@ -13,11 +15,13 @@ export const AuctionHero = ({ dao, opts = {} }: ComponentConfig) => {
 	const [latestTokenId, setLatestTokenId] = useState<number>();
 	const [tokenId, setTokenId] = useState<number>();
 	const [showCountdown, toggleCountdown] = useState<boolean>(true);
+	const [isDataLoaded, setIsDataLoaded] = useState<boolean>(false);
 	const token = useToken(tokenId, dao);
 
 	useEffect(() => {
-		const currentAuctionToken = auctionData?.auctionId;
+		Object.keys(auctionData).length && setIsDataLoaded(true);
 
+		const currentAuctionToken = auctionData?.auctionId;
 		if (currentAuctionToken !== undefined) {
 			if (!Number.isInteger(tokenId)) setTokenId(currentAuctionToken);
 			if (!Number.isInteger(latestTokenId) || tokenId === latestTokenId) {
@@ -25,7 +29,7 @@ export const AuctionHero = ({ dao, opts = {} }: ComponentConfig) => {
 				setLatestTokenId(currentAuctionToken);
 			} else setLatestTokenId(currentAuctionToken);
 		}
-	}, [auctionData?.auctionId]);
+	}, [auctionData]);
 
 	const date = auctionData && new Date(auctionData.endTime).toLocaleDateString('en-US');
 	const time = auctionData && new Date(auctionData.endTime).toLocaleTimeString('en-US');
@@ -44,8 +48,8 @@ export const AuctionHero = ({ dao, opts = {} }: ComponentConfig) => {
 		}
 	};
 	return (
-		<ComponentWrapper theme={theme}>
-			{auctionData && !auctionData?.auctionId ? (
+		<ComponentWrapper theme={theme} isDataLoaded={isDataLoaded}>
+			{isDataLoaded && !auctionData?.auctionId && (
 				<div id="auction">
 					<div className="flex justify-center mx-auto">
 						<div className="h-full text-center w-full flex flex-col md:flex-row md:gap-10 items-center">
@@ -53,14 +57,13 @@ export const AuctionHero = ({ dao, opts = {} }: ComponentConfig) => {
 						</div>
 					</div>
 				</div>
-			) : (
+			)}
+			{isDataLoaded && auctionData?.auctionId && (
 				<div id="auction">
 					<div className="flex justify-center mx-auto">
 						<div className="w-full flex flex-col md:flex-row md:gap-10 items-center">
 							<div className="md:w-3/5 aspect-square">
-								{token?.imageUrl && (
-									<img src={token.imageUrl} className="rounded-lg w-full" alt="" />
-								)}
+								{token?.imageUrl && <TokenImage imageUrl={token.imageUrl} />}
 							</div>
 							<div className="mt-10 mb-5 w-full sm:w-3/4 md:w-2/5">
 								<div className="flex flex-row items-center w-full gap-2 mb-3 md:mb-6">
