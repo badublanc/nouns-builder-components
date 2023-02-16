@@ -9,12 +9,14 @@ export const PropHouseRounds = ({ dao, opts = {} }: ComponentConfig) => {
 	const sortDirection = opts?.sortDirection?.toUpperCase() || 'DESC';
 	const rows = Number(opts?.rows) || 3;
 	const itemsPerRow = Number(opts?.itemsPerRow) || 2;
+	const [isDataLoaded, setIsDataLoaded] = useState<boolean>(false);
 
 	const roundData = usePropHouseRounds(dao);
 	const [rounds, setRounds] = useState<PHRoundData[]>([]);
 
 	useEffect(() => {
 		if (roundData.length) {
+			setIsDataLoaded(true);
 			if (sortDirection === 'ASC') {
 				const sorted = [...roundData].sort((a, b) => a.id - b.id);
 				setRounds(sorted);
@@ -23,7 +25,7 @@ export const PropHouseRounds = ({ dao, opts = {} }: ComponentConfig) => {
 	}, [roundData, sortDirection]);
 
 	return (
-		<ComponentWrapper theme={theme}>
+		<ComponentWrapper theme={theme} isDataLoaded={isDataLoaded}>
 			<div id="ph-rounds" className={`mx-auto grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-5`}>
 				{rounds.map((round, i) => {
 					const communitySlug = round.communityName.toLowerCase().replaceAll(' ', '-');

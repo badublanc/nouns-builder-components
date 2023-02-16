@@ -15,15 +15,16 @@ export const PropHouseProps = ({ dao, opts = {} }: ComponentConfig) => {
 	const format = (opts?.format as 'grid' | 'list') || 'list';
 	const sortDirection = opts?.sortDirection?.toUpperCase() || 'DESC';
 	const maxProposals = Number(opts?.max) || 12;
-
+	const [isDataLoaded, setIsDataLoaded] = useState<boolean>(false);
 	const roundData = usePropHouseRounds(dao);
 	const [round, setRound] = useState<PHRoundData>();
 	const [props, setProps] = useState<PHProposal[]>([]);
 
 	useEffect(() => {
 		if (roundData.length) {
-			let round: PHRoundData = {} as PHRoundData;
+			setIsDataLoaded(true);
 
+			let round: PHRoundData = {} as PHRoundData;
 			if (roundName) {
 				const index = roundData.findIndex((r) => r.title === roundName);
 				if (index >= 0) round = roundData[index];
@@ -40,7 +41,16 @@ export const PropHouseProps = ({ dao, opts = {} }: ComponentConfig) => {
 	}, [roundName, roundData, sortDirection]);
 
 	return (
-		<ComponentWrapper theme={theme}>
+		<ComponentWrapper theme={theme} isDataLoaded={isDataLoaded}>
+			{!props && (
+				<div id="auction">
+					<div className="flex justify-center mx-auto">
+						<div className="h-full text-center w-full flex flex-col md:flex-row md:gap-10 items-center">
+							<p className="bg-slate-50 p-4 md:p-10 w-full">No auction found</p>
+						</div>
+					</div>
+				</div>
+			)}
 			<div id="ph-rounds" className={cx(`mx-auto gap-5 `, getListFormatClasses(format))}>
 				{round &&
 					props.map((prop, i) => {

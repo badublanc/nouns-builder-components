@@ -14,11 +14,12 @@ export const CollectionList = ({ dao, opts = {} }: ComponentConfig) => {
 	const hideLabels = opts?.hideLabels === true || opts?.hideLabels === 'true';
 	const collection = useCollection(dao);
 	const isMdOrAbove = useMediaQuery({ query: '(min-width: 786px)' });
-
+	const [isDataLoaded, setIsDataLoaded] = useState<boolean>(false);
 	const [tokens, setTokens] = useState<TokenData[]>([]);
 
 	useEffect(() => {
 		if (collection.length) {
+			setIsDataLoaded(true);
 			if (sortDirection === 'DESC') {
 				const sorted = [...collection].sort((a, b) => b.id - a.id);
 				setTokens(sorted);
@@ -27,7 +28,7 @@ export const CollectionList = ({ dao, opts = {} }: ComponentConfig) => {
 	}, [collection, sortDirection]);
 
 	return (
-		<ComponentWrapper theme={theme}>
+		<ComponentWrapper theme={theme} isDataLoaded={isDataLoaded}>
 			{!collection.length && <Loading />}
 			<div
 				id="collection"

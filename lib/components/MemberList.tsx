@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import type { ComponentConfig } from '../types';
 import { useMembers } from '../hooks';
 import { Avatar } from './shared/Avatar';
@@ -12,9 +12,16 @@ export const MemberList = ({ dao, opts = {} }: ComponentConfig) => {
 	const itemsPerRow = Number(opts?.itemsPerRow) || 6;
 	const isMdOrAbove = useMediaQuery({ query: '(min-width: 786px)' });
 	const members = useMembers(dao);
+	const [isDataLoaded, setIsDataLoaded] = useState<boolean>(false);
+
+	useEffect(() => {
+		if (members.length) {
+			setIsDataLoaded(true);
+		}
+	}, [members]);
 
 	return (
-		<ComponentWrapper theme={theme}>
+		<ComponentWrapper theme={theme} isDataLoaded={isDataLoaded}>
 			<div
 				className={`mx-auto grid gap-3 md:gap-10`}
 				style={{
