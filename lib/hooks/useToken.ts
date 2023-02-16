@@ -38,6 +38,7 @@ export const useToken = (id: number | undefined, dao: DaoInfo): TokenData => {
 
 	// fetch data from zora api
 	useEffect(() => {
+		if (!id) return;
 		const fetchData = async (id: number) => {
 			const { chain } = dao;
 			const { collection } = dao.contracts;
