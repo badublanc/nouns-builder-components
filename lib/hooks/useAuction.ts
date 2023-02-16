@@ -13,7 +13,6 @@ const defaultData = {
 
 export const useAuction = (dao: DaoInfo) => {
 	const [auctionData, setAuctionData] = useState<AuctionData>(defaultData.auction);
-	console.log('auctionData', auctionData);
 	const [minBid, setMinBid] = useState<string>(defaultData.minBid);
 	const [userBid, setUserBid] = useState<string>('0');
 	const [isValidUserBid, setIsValidUserBid] = useState<boolean>(false);
@@ -39,8 +38,7 @@ export const useAuction = (dao: DaoInfo) => {
 	useEffect(() => {
 		if (auctionData?.auctionId) {
 			const { highestBid } = auctionData;
-			console.log('highestBid', highestBid);
-			if (!highestBid || (Number(highestBid) < 0)) setMinBid(defaultData.minBid);
+			if (!highestBid || Number(highestBid) < 0) setMinBid(defaultData.minBid);
 			else {
 				const bid = parseEther(highestBid);
 				if (bid.gt(parseEther('0'))) {
@@ -50,14 +48,13 @@ export const useAuction = (dao: DaoInfo) => {
 			}
 			return () => setMinBid(defaultData.minBid);
 		}
-		
 	}, [auctionData.highestBid, auctionData.minPctIncrease]);
 
 	// confirm if user bid is valid
 	useEffect(() => {
-		
 		if (Date.now() >= auctionData.endTime) setIsValidUserBid(false);
-		else if (!userBid || (Number(userBid) < 0) || !Number.isInteger(auctionData.auctionId)) setIsValidUserBid(false);
+		else if (!userBid || Number(userBid) < 0 || !Number.isInteger(auctionData.auctionId))
+			setIsValidUserBid(false);
 		else {
 			const bid = parseEther(userBid);
 			const min = parseEther(minBid);
