@@ -4,6 +4,7 @@ import { useCollection } from '..';
 import { NFT } from './NFT';
 import ComponentWrapper from './ComponentWrapper';
 import { useMediaQuery } from 'react-responsive';
+import Loading from './shared/Loading';
 
 export const CollectionList = ({ dao, opts = {} }: ComponentConfig) => {
 	const theme = opts?.theme;
@@ -27,6 +28,7 @@ export const CollectionList = ({ dao, opts = {} }: ComponentConfig) => {
 
 	return (
 		<ComponentWrapper theme={theme}>
+			{!collection.length && <Loading />}
 			<div
 				id="collection"
 				className={`mx-auto grid gap-8`}
@@ -36,23 +38,26 @@ export const CollectionList = ({ dao, opts = {} }: ComponentConfig) => {
 						: 'repeat(3,minmax(0,1fr))',
 				}}
 			>
-				{tokens?.map((token, i) => {
-					if (rows && i >= rows * itemsPerRow) return null;
-					return (
-						<a
-							href={`https://nouns.build/dao/${dao.contracts.collection}/${token.id}`}
-							key={token.id}
-						>
-							<NFT
-								token={token}
-								dao={dao}
-								showDetails={false}
-								inCollectionList={true}
-								hideLabels={hideLabels}
-							/>
-						</a>
-					);
-				})}
+				{collection &&
+					tokens?.map((token, i) => {
+						if (rows && i >= rows * itemsPerRow) return null;
+						return (
+							<a
+								href={`https://nouns.build/dao/${dao.contracts.collection}/${token.id}`}
+								key={token.id}
+								target="_blank"
+								rel="noreferrer"
+							>
+								<NFT
+									token={token}
+									dao={dao}
+									showDetails={false}
+									inCollectionList={true}
+									hideLabels={hideLabels}
+								/>
+							</a>
+						);
+					})}
 			</div>
 		</ComponentWrapper>
 	);
