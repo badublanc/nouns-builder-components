@@ -4,6 +4,7 @@ import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import type { DaoInfo, TokenData } from '../types';
 import { Account } from './shared/Account';
+import TokenImage from './shared/TokenImage';
 
 type Props = {
 	token: TokenData;
@@ -16,38 +17,11 @@ type Props = {
 export const NFT = ({ token, showDetails, dao, inCollectionList, hideLabels }: Props) => {
 	const { owner, name, imageUrl, mintInfo } = token;
 
-	const [isImageLoaded, setIsImageLoaded] = React.useState(false);
-	const [isImageError, setIsImageError] = React.useState(false);
-
 	return (
 		<div className={cx('flex flex-col', !inCollectionList && 'md:flex-row md:items-center')}>
 			<>
 				<div className={cx('w-full h-full', !inCollectionList && 'md:w-2/3')}>
-					<img
-						src={imageUrl}
-						style={isImageLoaded ? {} : { display: 'none' }}
-						onLoad={() => setIsImageLoaded(true)}
-						onError={() => setIsImageError(true)}
-						className={cx(
-							'rounded-md w-full',
-							!inCollectionList && 'rounded-b-none !md:rounded-md !md:rounded-r-none'
-						)}
-						alt={`${name} token image`}
-					/>
-
-					{/* Show placeholder until image is loaded */}
-					<div
-						style={
-							!isImageLoaded && !isImageError
-								? { display: 'block', height: '100%' }
-								: { display: 'none' }
-						}
-					>
-						<Skeleton
-							containerClassName="h-full w-full rounded-md rounded-b-none !md:rounded-md !md:rounded-r-none"
-							className="aspect-square"
-						/>
-					</div>
+					<TokenImage imageUrl={imageUrl} inCollectionList={inCollectionList} />
 				</div>
 				{!hideLabels && (
 					<div
