@@ -13,6 +13,7 @@
 	"scripts": {
 		"dev": "vite",
 		"bundle": "tsup",
+		"bundle:local": "tsup --env.PKG_VERSION 0 && yarn build",
 		"build": "tsc && vite build",
 		"watch:pkg": "tsup --watch",
 		"preview": "vite preview"
