@@ -53,12 +53,12 @@ export const AuctionHero = ({ dao, opts = {} }: ComponentConfig) => {
 				<div id="auction">
 					<div className="flex justify-center mx-auto">
 						<div className="h-full text-center w-full flex flex-col md:flex-row md:gap-10 items-center">
-							<p className="bg-slate-50 p-4 md:p-10 w-full">No auction found</p>
+							<p className="p-4 md:p-10 w-full">No auction found</p>
 						</div>
 					</div>
 				</div>
 			)}
-			{isDataLoaded && auctionData?.auctionId && (
+			{isDataLoaded && auctionData?.auctionId ? (
 				<div id="auction">
 					<div className="flex justify-center mx-auto">
 						<div className="w-full flex flex-col md:flex-row md:gap-10 items-center">
@@ -166,6 +166,8 @@ export const AuctionHero = ({ dao, opts = {} }: ComponentConfig) => {
 						</div>
 					</div>
 				</div>
+			) : (
+				<></>
 			)}
 		</ComponentWrapper>
 	);
