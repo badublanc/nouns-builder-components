@@ -27,6 +27,13 @@ export const PropHouseRounds = ({ opts = {} }: ComponentConfig) => {
 
 	return (
 		<ComponentWrapper theme={theme} isDataLoaded={roundData.length ? true : false}>
+			{!rounds && (
+				<div className="flex justify-center mx-auto">
+					<div className="h-full text-center w-full flex flex-col md:flex-row md:gap-10 items-center">
+						<p className="bg-slate-50 p-4 md:p-10 w-full">No Prop House rounds found</p>
+					</div>
+				</div>
+			)}
 			<div id="ph-rounds" className={`mx-auto grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-5`}>
 				{rounds.map((round, i) => {
 					if (rows && i >= rows * itemsPerRow) return null;
