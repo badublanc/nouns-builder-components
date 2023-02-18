@@ -11,7 +11,7 @@ const getListFormatClasses = (format: string) => {
 
 export const PropHouseProps = ({ opts = {} }: ComponentConfig) => {
 	const theme = opts?.theme;
-	const houseId = opts?.houseId ? Number(opts?.houseId) : 21;
+	const houseId = opts?.houseId && Number(opts?.houseId);
 	const roundName = opts?.round ?? '';
 	const format = (opts?.format as 'grid' | 'list') || 'list';
 	const maxProposals = Number(opts?.max) || 12;
@@ -35,7 +35,7 @@ export const PropHouseProps = ({ opts = {} }: ComponentConfig) => {
 			{!round && (
 				<div className="flex justify-center mx-auto">
 					<div className="h-full text-center w-full flex flex-col md:flex-row md:gap-10 items-center">
-						<p className="bg-slate-50 p-4 md:p-10 w-full">No Prop House props found</p>
+						<p className="p-4 md:p-10 w-full">No Prop House props found</p>
 					</div>
 				</div>
 			)}

@@ -3,13 +3,15 @@ import { useRoundsByHouse, type Round } from 'use-prop-house';
 import { ComponentConfig } from '../types';
 import ComponentWrapper from './ComponentWrapper';
 import { PropHouseRound } from './shared/PropHouseRound';
+import { useMediaQuery } from 'react-responsive';
 
 export const PropHouseRounds = ({ opts = {} }: ComponentConfig) => {
 	const theme = opts?.theme;
-	const houseId = opts?.houseId ? Number(opts?.houseId) : 21;
+	const houseId = opts?.houseId && Number(opts?.houseId);
 	const sortDirection = opts?.sortDirection?.toUpperCase() || 'DESC';
 	const rows = Number(opts?.rows) || 3;
 	const itemsPerRow = Number(opts?.itemsPerRow) || 2;
+	const isMdOrAbove = useMediaQuery({ query: '(min-width: 786px)' });
 	const [isDataLoaded, setIsDataLoaded] = useState<boolean>(false);
 
 	const { data: roundData } = useRoundsByHouse({ houseId });
@@ -30,11 +32,19 @@ export const PropHouseRounds = ({ opts = {} }: ComponentConfig) => {
 			{!rounds && (
 				<div className="flex justify-center mx-auto">
 					<div className="h-full text-center w-full flex flex-col md:flex-row md:gap-10 items-center">
-						<p className="bg-slate-50 p-4 md:p-10 w-full">No Prop House rounds found</p>
+						<p className="p-4 md:p-10 w-full">No Prop House rounds found</p>
 					</div>
 				</div>
 			)}
-			<div id="ph-rounds" className={`mx-auto grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-5`}>
+			<div
+				id="ph-rounds"
+				className={`mx-auto grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-5`}
+				style={{
+					gridTemplateColumns: isMdOrAbove
+						? `repeat(${itemsPerRow},minmax(0,1fr))`
+						: 'repeat(1,minmax(0,1fr))',
+				}}
+			>
 				{rounds.map((round, i) => {
 					if (rows && i >= rows * itemsPerRow) return null;
 					return (
