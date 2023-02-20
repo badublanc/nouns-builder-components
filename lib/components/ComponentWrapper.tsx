@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { applyTheme } from '../themes/utils';
 import type { Theme } from '../types';
 import Loading from './shared/Loading';
+import LoadingImage from './shared/LoadingImage';
 
 type Props = {
 	theme?: 'base' | 'dark' | undefined;
@@ -21,7 +22,13 @@ function ComponentWrapper(props: Props) {
 	}, [theme, ref]);
 	return (
 		<div className={'text-text-base bg-background p-2 md:p-5 rounded-lg'} ref={ref}>
-			{!props.isDataLoaded ? <Loading /> : props.children}
+			{!props.isDataLoaded ? (
+				<div className="mx-auto w-full h-full flex items-center justify-center p-4 md:p-10">
+					<LoadingImage theme={theme} />
+				</div>
+			) : (
+				props.children
+			)}
 		</div>
 	);
 }
