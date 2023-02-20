@@ -34,7 +34,14 @@ export const MemberList = ({ dao, opts = {} }: ComponentConfig) => {
 					if (rows && i >= rows * itemsPerRow) return null;
 					return (
 						<div className="w-full" key={i}>
-							<Avatar address={member.address} chainId={dao.chainId} />
+							<a
+								href={`https://etherscan.io/address/${member.address}`}
+								className="inline-flex flex-row items-center"
+								target="_blank"
+								rel="noreferrer"
+							>
+								<Avatar address={member.address} chainId={dao.chainId} />
+							</a>
 							<Account address={member.address} chainId={dao.chainId} hideAvatar={true} />
 						</div>
 					);
