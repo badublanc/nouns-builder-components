@@ -23,7 +23,7 @@ export const ProposalListItem = ({ dao, proposal }: ProposalListItemConfig) => {
 	const { collection } = dao.contracts;
 
 	return (
-		<a href={`https://nouns.build/dao/${collection}/vote/${id}`}>
+		<a href={`https://nouns.build/dao/${collection}/vote/${id}`} target="_blank" rel="noreferrer">
 			<div
 				className={`flex flex-col-reverse md:flex-row justify-between gap-3 border border-theme-border p-3 md:p-5 rounded-lg hover:shadow-md shadow-none transition-shadow`}
 			>
