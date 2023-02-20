@@ -4,7 +4,6 @@ import { useCollection } from '..';
 import { NFT } from './NFT';
 import ComponentWrapper from './ComponentWrapper';
 import { useMediaQuery } from 'react-responsive';
-import Loading from './shared/Loading';
 
 export const CollectionList = ({ dao, opts = {} }: ComponentConfig) => {
 	const theme = opts?.theme;
@@ -29,7 +28,6 @@ export const CollectionList = ({ dao, opts = {} }: ComponentConfig) => {
 
 	return (
 		<ComponentWrapper theme={theme} isDataLoaded={isDataLoaded}>
-			{!collection.length && <Loading />}
 			<div
 				id="collection"
 				className={`mx-auto grid gap-8`}

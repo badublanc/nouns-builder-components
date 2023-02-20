@@ -6,7 +6,6 @@ import { useAuction, useToken } from '..';
 import ComponentWrapper from './ComponentWrapper';
 import { Account } from './shared/Account';
 import { BidForm } from './BidForm';
-import Loading from './shared/Loading';
 import TokenImage from './shared/TokenImage';
 
 export const AuctionHero = ({ dao, opts = {} }: ComponentConfig) => {

@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { applyTheme } from '../themes/utils';
 import type { Theme } from '../types';
-import Loading from './shared/Loading';
 import LoadingImage from './shared/LoadingImage';
 
 type Props = {
