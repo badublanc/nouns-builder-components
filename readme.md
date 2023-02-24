@@ -26,7 +26,7 @@ yarn add nouns-builder-components wagmi ethers^5 @rainbow-me/rainbowkit
 
 Once installed, import the `BuilderDAO` provider and component stylesheet. Wrap your application with `BuilderDAO`, `RainbowKitProvider`, and `WagmiConfig`. Instructions for setting up wagmi and rainbowkit are available in the [RainbowKit installation documentation]().
 
-A working setup can be found on [CodeSanbox](https://codesandbox.io/s/builder-components-demo-zyfyd2?file=/src/App.js).
+A working setup can be found on [CodeSanbox](https://codesandbox.io/s/builder-components-demo-zyfyd2?file=/src/index.js).
 
 ```jsx
 // ...
