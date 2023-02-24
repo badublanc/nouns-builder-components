@@ -72,6 +72,8 @@ export default function App() {
 }
 ```
 
+See a working demo on [CodeSandbox](https://codesandbox.io/s/builder-components-demo-zyfyd2?file=/src/App.jsx).
+
 ---
 
 ## Components
