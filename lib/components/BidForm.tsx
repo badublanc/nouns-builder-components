@@ -51,8 +51,21 @@ export const BidForm = ({ auctionData, formData, dao, theme }: any) => {
 	};
 
 	useEffect(() => {
-		if (Date.now() >= auctionData.endTime) setIsComplete(true);
-		else setIsComplete(false);
+		let timer: ReturnType<typeof setTimeout>;
+
+		if (Date.now() >= auctionData.endTime) {
+			setIsComplete(true);
+			return;
+		}
+
+		setIsComplete(false);
+
+		// update once time expires
+		timer = setTimeout(() => {
+			setIsComplete(true);
+		}, auctionData.endTime - Date.now());
+
+		return () => clearTimeout(timer);
 	}, [auctionData]);
 
 	useEffect(() => {
