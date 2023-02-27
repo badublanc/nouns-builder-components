@@ -144,7 +144,7 @@ export const AuctionHero = ({ dao, opts = {} }: ComponentConfig) => {
 								{tokenId && tokenId === auctionData?.auctionId && (
 									<>
 										<BidForm
-											tokenId={auctionData?.auctionId}
+											auctionData={auctionData}
 											formData={formData}
 											dao={dao}
 											theme={theme}
