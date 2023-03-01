@@ -4,9 +4,9 @@ Nouns Builder Components is a collection of reusable, lightly-styled React compo
 
 > **Note**
 >
-> This library is for technical users. Check out the [easy-to-use builder](https://loading-image-error--chimerical-marigold-6a05a8.netlify.app/) to embed the components without coding!
+> This library is for technical users. Check out the [easy-to-use builder](https://buildercomponents.wtf/) to embed the components without coding!
 
-[Click here to preview all the components](https://loading-image-error--chimerical-marigold-6a05a8.netlify.app/)!
+[Click here to preview all the components](https://buildercomponents.wtf/)!
 
 ---
 
