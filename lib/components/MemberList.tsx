@@ -23,7 +23,7 @@ export const MemberList = ({ dao, opts = {} }: ComponentConfig) => {
 	return (
 		<ComponentWrapper theme={theme} isDataLoaded={isDataLoaded}>
 			<div
-				className={`mx-auto grid gap-3 md:gap-10`}
+				className={`nbc-mx-auto nbc-grid nbc-gap-3 md:nbc-gap-10`}
 				style={{
 					gridTemplateColumns: isMdOrAbove
 						? `repeat(${itemsPerRow},minmax(0,1fr))`
@@ -33,10 +33,10 @@ export const MemberList = ({ dao, opts = {} }: ComponentConfig) => {
 				{members?.map((member, i) => {
 					if (rows && i >= rows * itemsPerRow) return null;
 					return (
-						<div className="w-full" key={i}>
+						<div className="nbc-w-full" key={i}>
 							<a
 								href={`https://etherscan.io/address/${member.address}`}
-								className="inline-flex flex-row items-center"
+								className="nbc-inline-flex nbc-flex-row nbc-items-center"
 								target="_blank"
 								rel="noreferrer"
 							>

@@ -19,8 +19,8 @@ function TokenImage({ imageUrl, inCollectionList }: Props) {
 				onLoad={() => setIsImageLoaded(true)}
 				onError={() => setIsImageError(true)}
 				className={cx(
-					'rounded-md w-full',
-					!inCollectionList && 'rounded-b-none !md:rounded-md !md:rounded-r-none'
+					'nbc-w-full nbc-rounded-md',
+					!inCollectionList && '!md:nbc-rounded-md !md:nbc-rounded-r-none nbc-rounded-b-none'
 				)}
 				alt={`${name} token image`}
 			/>
@@ -34,8 +34,8 @@ function TokenImage({ imageUrl, inCollectionList }: Props) {
 				}
 			>
 				<Skeleton
-					containerClassName="h-full w-full rounded-md rounded-b-none !md:rounded-md !md:rounded-r-none"
-					className="aspect-square"
+					containerClassName="nbc-h-full nbc-w-full nbc-rounded-md nbc-rounded-b-none !md:nbc-rounded-md !md:nbc-rounded-r-none"
+					className="nbc-aspect-square"
 				/>
 			</div>
 		</>

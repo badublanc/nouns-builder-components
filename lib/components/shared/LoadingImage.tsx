@@ -30,8 +30,8 @@ function LoadingImage({ theme }: Props) {
 					}}
 				>
 					<path
-						fill-rule="evenodd"
-						clip-rule="evenodd"
+						fillRule="evenodd"
+						clipRule="evenodd"
 						d="M30 0H90V20H100V0H160V60H100V30H90V60H30V30H10V50H0V30V20H30V0Z"
 					/>
 				</g>

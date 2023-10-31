@@ -1,9 +1,13 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
 	content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}', './lib/**/*.{js,ts,jsx,tsx}'],
+	prefix: 'nbc-',
 	darkMode: 'class',
 	theme: {
 		extend: {
+			fontFamily: {
+				sans: ['PT Root UI', 'Helvetica Neue', 'Arial', 'sans-serif'],
+			},
 			colors: {
 				primary: 'var(--theme-primary)',
 				secondary: 'var(--theme-secondary)',

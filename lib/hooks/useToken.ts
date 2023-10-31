@@ -1,28 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { useContract, useProvider } from 'wagmi';
-import { BigNumber } from '@ethersproject/bignumber';
+import { readContract } from '@wagmi/core';
 import type { DaoInfo, TokenData } from '../types';
 import { logWarning } from '../utils';
 import { TokenABI } from '../abis';
 import { fetchTokenData } from '../queries';
 
 export const useToken = (id: number | undefined, dao: DaoInfo): TokenData => {
-	const provider = useProvider();
 	const [tokenData, setTokenData] = useState<TokenData>();
 
-	const tokenContract = useContract({
-		address: dao.contracts.collection as `0x${string}`,
-		abi: TokenABI,
-		signerOrProvider: provider,
-	});
-
 	const getDataFromContract = async (id: number): Promise<TokenData | null> => {
-		const tokenId = BigNumber.from(String(id));
-		const response = await tokenContract?.tokenURI(tokenId);
+		const tokenData = await readContract({
+			address: dao.contracts.collection as `0x${string}`,
+			abi: TokenABI,
+			functionName: 'tokenURI',
+			args: [BigInt(id)],
+		});
 
-		if (!response) return null;
-
-		const data = JSON.parse(window.atob(response.split(',')[1]));
+		const data = JSON.parse(window.atob(tokenData.split(',')[1]));
 		const { name, description, image, properties } = data;
 
 		return {

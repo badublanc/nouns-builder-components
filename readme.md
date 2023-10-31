@@ -16,15 +16,15 @@ You can install the library and its peer dependencies with your favorite package
 
 ```bash
 # npm
-npm i nouns-builder-components wagmi ethers^5 @rainbow-me/rainbowkit
+npm i nouns-builder-components @rainbow-me/rainbowkit@latest wagmi viem
 
 # yarn
-yarn add nouns-builder-components wagmi ethers^5 @rainbow-me/rainbowkit
+yarn add nouns-builder-components @rainbow-me/rainbowkit@latest wagmi viem
 ```
 
 ## Setup
 
-Once installed, import the `BuilderDAO` provider and component stylesheet. Wrap your application with `BuilderDAO`, `RainbowKitProvider`, and `WagmiConfig`. Instructions for setting up wagmi and rainbowkit are available in the [RainbowKit installation documentation](https://www.rainbowkit.com/docs/installation).
+Once installed, import the `BuilderDAO` provider and component stylesheet. Wrap your application with `BuilderDAO`, `RainbowKitProvider`, and `WagmiConfig`. Instructions for setting up wagmi and RainbowKit are available in the [RainbowKit installation documentation](https://www.rainbowkit.com/docs/installation).
 
 A working setup can be found on [CodeSanbox](https://codesandbox.io/s/builder-components-demo-zyfyd2?file=/src/index.js).
 

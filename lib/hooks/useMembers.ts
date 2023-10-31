@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { constants } from 'ethers';
+import { AddressZero } from '../constants';
 import type { DaoInfo, DaoMember } from '../types';
 import { fetchMembers } from '../queries';
 
@@ -14,7 +14,7 @@ export const useMembers = (dao: DaoInfo) => {
 			const data = await fetchMembers({ collection, chain });
 			if (data.length) {
 				// filter burned tokens
-				const filteredMembers = data.filter((m) => m.address !== constants.AddressZero);
+				const filteredMembers = data.filter((m) => m.address !== AddressZero);
 				setMembers(filteredMembers);
 			} else setMembers([]);
 		};

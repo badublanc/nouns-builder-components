@@ -20,9 +20,12 @@ function ComponentWrapper(props: Props) {
 		}
 	}, [theme, ref]);
 	return (
-		<div className={'text-text-base bg-background p-2 md:p-5 rounded-lg'} ref={ref}>
+		<div
+			className={'nbc-rounded-lg nbc-bg-background nbc-p-2 nbc-text-text-base md:nbc-p-5'}
+			ref={ref}
+		>
 			{!props.isDataLoaded ? (
-				<div className="mx-auto w-full h-full flex items-center justify-center p-4 md:p-10">
+				<div className="nbc-mx-auto nbc-flex nbc-h-full nbc-w-full nbc-items-center nbc-justify-center nbc-p-4 md:nbc-p-10">
 					<LoadingImage theme={theme} />
 				</div>
 			) : (

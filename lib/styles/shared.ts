@@ -1,9 +1,9 @@
-export const label = 'text-sm text-slate-400';
-export const pill = 'rounded-md px-2 py-1 text-center text-sm h-fit';
+export const label = 'nbc-text-sm nbc-text-slate-400';
+export const pill = 'nbc-rounded-md nbc-px-2 nbc-py-1 nbc-text-center nbc-text-sm nbc-h-fit';
 
 export const statusColors: string[] = [
-	'bg-red-200 text-red-800',
-	'bg-green-200 text-green-800',
-	'bg-gray-200 text-gray-500',
+	'nbc-bg-red-200 nbc-text-red-800',
+	'nbc-bg-green-200 nbc-text-green-800',
+	'nbc-bg-gray-200 nbc-text-gray-500',
 ];
-export const componentBaseStyles = 'text-text-base bg-background';
+export const componentBaseStyles = 'nbc-text-text-base nbc-bg-background';
