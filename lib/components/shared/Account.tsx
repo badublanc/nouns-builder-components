@@ -26,19 +26,19 @@ export const Account = ({ address, chainId, hideAvatar = false }: AccountConfig)
 	return (
 		<a
 			href={`https://etherscan.io/address/${address}`}
-			className="inline-flex flex-row items-center"
+			className="nbc-inline-flex nbc-flex-row nbc-items-center"
 			target="_blank"
 			rel="noreferrer"
 		>
 			{!hideAvatar === true && (
-				<span className="mr-2 h-6 w-6 absolute">
+				<span className="nbc-absolute nbc-mr-2 nbc-h-6 nbc-w-6">
 					<Avatar address={address} chainId={chainId} />
 				</span>
 			)}
 			<span
 				className={cx(
-					'w-full overflow-hidden overflow-ellipsis font-bold',
-					!hideAvatar === true && 'pl-7'
+					'nbc-w-full nbc-overflow-hidden nbc-overflow-ellipsis nbc-font-bold',
+					!hideAvatar === true && 'nbc-pl-7'
 				)}
 			>
 				{ensName || trunc(address)}

@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { BigNumber } from 'ethers';
-import { parseEther } from 'ethers/lib/utils.js';
+import { parseEther } from 'viem';
 import { usePrepareContractWrite, useContractWrite } from 'wagmi';
+import { writeContract } from '@wagmi/core';
 import { applyTheme } from '../themes/utils';
 import { AuctionABI } from '../abis';
 
@@ -10,20 +10,14 @@ export const BidForm = ({ auctionData, formData, dao, theme }: any) => {
 
 	const [isComplete, setIsComplete] = useState<boolean>(false);
 
-	// settle auction contract logic
-	const settleLogic = usePrepareContractWrite({
-		address: dao.contracts.auction as `0x${string}`,
-		chainId: dao.chainId,
-		abi: AuctionABI,
-		functionName: 'settleCurrentAndCreateNewAuction',
-		enabled: isComplete,
-		onError(err) {
-			console.error(err);
-		},
-	});
-
-	const settle = useContractWrite(settleLogic.config);
-	const settleAuction = () => settle.write?.();
+	const settleAuction = async () => {
+		await writeContract({
+			address: dao.contracts.auction as `0x${string}`,
+			chainId: dao.chainId,
+			abi: AuctionABI,
+			functionName: 'settleCurrentAndCreateNewAuction',
+		});
+	};
 
 	// place bid contract logic
 	const bidLogic = usePrepareContractWrite({
@@ -31,11 +25,9 @@ export const BidForm = ({ auctionData, formData, dao, theme }: any) => {
 		chainId: dao.chainId,
 		abi: AuctionABI,
 		functionName: 'createBid',
-		args: [BigNumber.from(String(auctionData.auctionId))],
-		enabled: !formData.btn.disabled,
-		overrides: {
-			value: parseEther(formData.input.value || '0'),
-		},
+		args: [BigInt(String(auctionData.auctionId))],
+		enabled: !formData.btn.disabled && formData.input.value,
+		value: parseEther(formData.input.value || '0'),
 		onError(err) {
 			console.error(err);
 		},
@@ -78,32 +70,34 @@ export const BidForm = ({ auctionData, formData, dao, theme }: any) => {
 	return (
 		<form
 			onSubmit={handleSubmit}
-			className={'mt-4 md:mt-8 flex flex-col font-bold sm:flex-row gap-5 w-full'}
+			className={
+				'nbc-mt-4 nbc-flex nbc-w-full nbc-flex-col nbc-gap-5 nbc-font-bold sm:nbc-flex-row md:nbc-mt-8'
+			}
 			ref={ref}
 		>
 			{isComplete ? (
 				<button
 					type="submit"
-					className="rounded-lg text-xl w-full px-5 py-2.5 mr-2 mb-2 disabled:cursor-not-allowed disabled:pointer-events-none flex-shrink-0 border-2 border-text-base disabled:opacity-40"
+					className="nbc-mr-2 nbc-mb-2 nbc-w-full nbc-flex-shrink-0 nbc-rounded-lg nbc-border-2 nbc-border-text-base nbc-px-5 nbc-py-2.5 nbc-text-xl disabled:nbc-pointer-events-none disabled:nbc-cursor-not-allowed disabled:nbc-opacity-40"
 				>
 					Settle auction
 				</button>
 			) : (
 				<>
-					<div className="relative mb-2 w-full flex-grow">
-						<span className="text-lg absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-400">
+					<div className="nbc-relative nbc-mb-2 nbc-w-full nbc-flex-grow">
+						<span className="nbc-pointer-events-none nbc-absolute nbc-inset-y-0 nbc-left-0 nbc-flex nbc-items-center nbc-pl-3 nbc-text-lg nbc-text-gray-400">
 							Ξ
 						</span>
 						<input
 							{...formData.input}
-							className="text-xl shadow appearance-none border rounded-lg w-full py-4 pl-7 px-4 text-gray-700 leading-tight focus:shadow-outline"
+							className="focus:nbc-shadow-outline nbc-w-full nbc-appearance-none nbc-rounded-lg nbc-border nbc-py-4 nbc-px-4 nbc-pl-7 nbc-text-xl nbc-leading-tight nbc-text-gray-700 nbc-shadow"
 						/>
 					</div>
 
 					<button
 						type="submit"
 						{...formData.btn}
-						className="rounded-lg text-xl px-5 py-2.5 mr-2 mb-2 disabled:cursor-not-allowed disabled:pointer-events-none flex-shrink-0 border-2 border-text-base disabled:opacity-40"
+						className="nbc-mr-2 nbc-mb-2 nbc-flex-shrink-0 nbc-rounded-lg nbc-border-2 nbc-border-text-base nbc-px-5 nbc-py-2.5 nbc-text-xl disabled:nbc-pointer-events-none disabled:nbc-cursor-not-allowed disabled:nbc-opacity-40"
 					>
 						Place bid
 					</button>

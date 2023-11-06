@@ -37,14 +37,14 @@ export const Treasury = ({ dao, opts = {} }: ComponentConfig) => {
 		<a
 			href={'https://etherscan.io/address/' + address}
 			className={
-				'w-fit block text-text-base bg-background border border-theme-border p-3 md:p-5 rounded-lg hover:shadow-md shadow-none transition-shadow'
+				'text-text-base nbc-block nbc-w-fit nbc-rounded-lg nbc-border nbc-border-theme-border nbc-bg-background nbc-p-3 nbc-text-base nbc-shadow-none nbc-transition-shadow hover:nbc-shadow-md md:nbc-p-5'
 			}
 			rel="noreferrer"
 			target="_blank"
 			ref={ref}
 		>
-			<p className="font-bold">
-				<span className="opacity-60 inline-block mr-3">Treasury</span>Ξ {balance}
+			<p className="nbc-font-bold">
+				<span className="nbc-mr-3 nbc-inline-block nbc-opacity-60">Treasury</span>Ξ {balance}
 			</p>
 		</a>
 	);

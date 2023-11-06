@@ -56,7 +56,7 @@ export type AuctionData = {
 	endTime: number;
 	highestBid: string;
 	highestBidder: string;
-	minPctIncrease: string;
+	minPctIncrease?: string;
 };
 
 export type CollectionData = {

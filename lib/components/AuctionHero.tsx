@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { constants } from 'ethers';
 import Countdown, { CountdownRenderProps } from 'react-countdown';
 import type { ComponentConfig } from '../types';
 import { useAuction, useToken } from '..';
+import { AddressZero } from '../constants';
 import ComponentWrapper from './ComponentWrapper';
 import { Account } from './shared/Account';
 import { BidForm } from './BidForm';
@@ -50,24 +50,24 @@ export const AuctionHero = ({ dao, opts = {} }: ComponentConfig) => {
 		<ComponentWrapper theme={theme} isDataLoaded={isDataLoaded}>
 			{isDataLoaded && !auctionData?.auctionId && (
 				<div id="auction">
-					<div className="flex justify-center mx-auto">
-						<div className="h-full text-center w-full flex flex-col md:flex-row md:gap-10 items-center">
-							<p className="p-4 md:p-10 w-full">No auction found</p>
+					<div className="nbc-mx-auto nbc-flex nbc-justify-center">
+						<div className="nbc-flex nbc-h-full nbc-w-full nbc-flex-col nbc-items-center nbc-text-center md:nbc-flex-row md:nbc-gap-10">
+							<p className="nbc-w-full nbc-p-4 md:nbc-p-10">No auction found</p>
 						</div>
 					</div>
 				</div>
 			)}
 			{isDataLoaded && auctionData?.auctionId ? (
 				<div id="auction">
-					<div className="flex justify-center mx-auto">
-						<div className="w-full flex flex-col md:flex-row md:gap-10 items-center">
-							<div className="md:w-3/5 aspect-square">
+					<div className="nbc-mx-auto nbc-flex nbc-justify-center">
+						<div className="nbc-flex nbc-w-full nbc-flex-col nbc-items-center md:nbc-flex-row md:nbc-gap-10">
+							<div className="nbc-aspect-square md:nbc-w-3/5">
 								{token?.imageUrl && <TokenImage imageUrl={token.imageUrl} />}
 							</div>
-							<div className="mt-10 mb-5 w-full sm:w-3/4 md:w-2/5">
-								<div className="flex flex-row items-center w-full gap-2 mb-3 md:mb-6">
+							<div className="nbc-mt-10 nbc-mb-5 nbc-w-full sm:nbc-w-3/4 md:nbc-w-2/5">
+								<div className="nbc-mb-3 nbc-flex nbc-w-full nbc-flex-row nbc-items-center nbc-gap-2 md:nbc-mb-6">
 									<button
-										className="bg-gray-400 opacity-70 hover:opacity-100 text-base font-bold py-1 px-2 rounded-full text-md aspect-square disabled:opacity-25 leading-none"
+										className="nbc-text-md nbc-aspect-square nbc-rounded-full nbc-bg-gray-400 nbc-py-1 nbc-px-2 nbc-text-base nbc-font-bold nbc-leading-none nbc-opacity-70 hover:nbc-opacity-100 disabled:nbc-opacity-25"
 										disabled={!tokenId || tokenId <= 0}
 										onClick={() => {
 											tokenId !== undefined && tokenId >= 0 && setTokenId(tokenId - 1);
@@ -76,7 +76,7 @@ export const AuctionHero = ({ dao, opts = {} }: ComponentConfig) => {
 										←
 									</button>
 									<button
-										className="bg-slate-400 opacity-70 hover:opacity-100 text-base font-bold py-1 px-2 rounded-full text-md aspect-square disabled:opacity-25 leading-none"
+										className="nbc-text-md nbc-aspect-square nbc-rounded-full nbc-bg-slate-400 nbc-py-1 nbc-px-2 nbc-text-base nbc-font-bold nbc-leading-none nbc-opacity-70 hover:nbc-opacity-100 disabled:nbc-opacity-25"
 										disabled={tokenId === auctionData?.auctionId}
 										onClick={() => {
 											tokenId !== undefined &&
@@ -87,29 +87,31 @@ export const AuctionHero = ({ dao, opts = {} }: ComponentConfig) => {
 										→
 									</button>
 								</div>
-								<h1 className="text-4xl md:text-5xl font-bold">
+								<h1 className="nbc-text-4xl nbc-font-bold md:nbc-text-5xl">
 									{token?.name ? token?.name : <></>}
 								</h1>
 								{auctionData?.auctionId === tokenId ? (
 									<>
-										<div className="flex gap-5">
-											<div className="my-5">
-												<p className="text-md text-text-base opacity-40">highest bid</p>
-												<p className="text-3xl font-bold text-text-base">
+										<div className="nbc-flex nbc-gap-5">
+											<div className="nbc-my-5">
+												<p className="nbc-text-md nbc-text-text-base nbc-opacity-40">highest bid</p>
+												<p className="nbc-text-3xl nbc-font-bold nbc-text-text-base">
 													Ξ {auctionData?.highestBid}
 												</p>
 											</div>
-											<div className="my-5">
-												<p className="text-md text-text-base opacity-40">auction ends</p>
+											<div className="nbc-my-5">
+												<p className="nbc-text-md nbc-text-text-base nbc-opacity-40">
+													auction ends
+												</p>
 												<button
-													className="font-bold text-text-base text-left"
+													className="nbc-text-left nbc-font-bold nbc-text-text-base"
 													onClick={() => {
 														toggleCountdown(!showCountdown);
 													}}
 												>
 													{showCountdown ? (
 														auctionData?.endTime && (
-															<span className="text-3xl">
+															<span className="nbc-text-3xl">
 																<Countdown
 																	renderer={countdownRenderer}
 																	daysInHours={true}
@@ -119,10 +121,10 @@ export const AuctionHero = ({ dao, opts = {} }: ComponentConfig) => {
 														)
 													) : (
 														<>
-															<span className="text-left text-lg">
+															<span className="nbc-text-left nbc-text-lg">
 																{date} {time}
 															</span>
-															<span className="text-left text-lg"></span>
+															<span className="nbc-text-left nbc-text-lg"></span>
 														</>
 													)}
 												</button>
@@ -132,9 +134,9 @@ export const AuctionHero = ({ dao, opts = {} }: ComponentConfig) => {
 								) : (
 									<>
 										{auctionData?.highestBidder && (
-											<div className="my-5">
-												<p className="text-md text-text-base opacity-40">owned by</p>
-												<p className="text-3xl font-bold text-text-base truncate w-full max-w-[300px]">
+											<div className="nbc-my-5">
+												<p className="nbc-text-md nbc-text-text-base nbc-opacity-40">owned by</p>
+												<p className="nbc-w-full nbc-max-w-[300px] nbc-truncate nbc-text-3xl nbc-font-bold nbc-text-text-base">
 													<Account address={token.owner} chainId={dao.chainId} />
 												</p>
 											</div>
@@ -149,11 +151,11 @@ export const AuctionHero = ({ dao, opts = {} }: ComponentConfig) => {
 											dao={dao}
 											theme={theme}
 										/>
-										{auctionData?.highestBidder !== constants.AddressZero && (
-											<div className="my-5">
-												<p className="text-1xl font-bold text-text-base truncate w-full max-w-[300px] flex flex-row gap-3 justify-between">
+										{auctionData?.highestBidder !== AddressZero && (
+											<div className="nbc-my-5">
+												<p className="nbc-text-1xl nbc-flex nbc-w-full nbc-max-w-[300px] nbc-flex-row nbc-justify-between nbc-gap-3 nbc-truncate nbc-font-bold nbc-text-text-base">
 													<Account address={auctionData?.highestBidder} chainId={dao.chainId} />
-													<span className="text-md text-text-base opacity-40">
+													<span className="nbc-text-md nbc-text-text-base nbc-opacity-40">
 														Ξ {auctionData.highestBid}
 													</span>
 												</p>

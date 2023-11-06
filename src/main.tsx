@@ -3,7 +3,8 @@ import '@rainbow-me/rainbowkit/styles.css';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-import { WagmiConfig, createClient, configureChains, mainnet, goerli } from 'wagmi';
+import { WagmiConfig, createConfig, configureChains } from 'wagmi';
+import { mainnet, goerli } from 'wagmi/chains';
 import { publicProvider } from 'wagmi/providers/public';
 import { infuraProvider } from 'wagmi/providers/infura';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
@@ -15,6 +16,11 @@ const chain = (config?.dataset.chain?.toUpperCase() as 'MAINNET' | 'GOERLI') || 
 const collection = config?.dataset.daoCollection || '';
 const infuraId = config?.dataset.infuraKey || '';
 const alchemyId = config?.dataset.alchemyKey || '';
+const projectId = config?.dataset.projectId || '';
+
+if (!projectId) {
+	throw new Error('Project id required. See docs for more information.');
+}
 
 if (!infuraId && !alchemyId) {
 	throw new Error('Infura or Alchemy API key required. See docs for more information.');
@@ -24,7 +30,7 @@ if (!infuraId && !alchemyId) {
 	throw new Error(`Invalid chain: ${chain}. Chain must be set to mainnet or goerli.`);
 }
 
-const { chains, provider, webSocketProvider } = configureChains(
+const { chains, publicClient } = configureChains(
 	[chain === 'GOERLI' ? goerli : mainnet],
 	[
 		infuraId ? infuraProvider({ apiKey: infuraId }) : alchemyProvider({ apiKey: alchemyId }),
@@ -34,14 +40,14 @@ const { chains, provider, webSocketProvider } = configureChains(
 
 const { connectors } = getDefaultWallets({
 	appName: 'DAO Components',
+	projectId,
 	chains,
 });
 
-const wagmiClient = createClient({
+const wagmiClient = createConfig({
 	autoConnect: true,
 	connectors,
-	provider,
-	webSocketProvider,
+	publicClient,
 });
 
 const components = document.querySelectorAll('[data-builder-component]');
@@ -55,7 +61,7 @@ for (const component of components) {
 
 	ReactDOM.createRoot(root).render(
 		<React.StrictMode>
-			<WagmiConfig client={wagmiClient}>
+			<WagmiConfig config={wagmiClient}>
 				<RainbowKitProvider chains={chains}>
 					<BuilderDAO collection={collection} chain={chain}>
 						<App config={root.dataset} />

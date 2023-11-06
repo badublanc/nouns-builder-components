@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { zorbImageDataURI } from '@zoralabs/zorb';
-import { constants } from 'ethers';
+import { AddressZero } from '../../constants';
 import type { DaoInfo } from '../../types';
 import { fetchEnsData } from '../../utils';
 
@@ -14,7 +14,7 @@ export const Avatar = ({ address }: AvatarConfig) => {
 
 	const zorbImage = useMemo(() => {
 		if (address) return zorbImageDataURI(address);
-		else return zorbImageDataURI(constants.AddressZero);
+		else return zorbImageDataURI(AddressZero);
 	}, [address]);
 
 	useEffect(() => {
@@ -27,5 +27,7 @@ export const Avatar = ({ address }: AvatarConfig) => {
 		else setEnsAvatar('');
 	}, [address]);
 
-	return <img src={ensAvatar || zorbImage} className="w-full rounded-full aspect-square" />;
+	return (
+		<img src={ensAvatar || zorbImage} className="nbc-aspect-square nbc-w-full nbc-rounded-full" />
+	);
 };

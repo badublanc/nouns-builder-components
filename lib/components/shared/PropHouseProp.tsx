@@ -15,23 +15,23 @@ export const PropHouseProp = ({ prop, format }: PropHousePropConfig) => {
 
 	return (
 		<div
-			className={`h-full border border-theme-border p-3 md:p-5 rounded-lg hover:shadow-md shadow-none transition-shadow`}
+			className={`nbc-h-full nbc-rounded-lg nbc-border nbc-border-theme-border nbc-p-3 nbc-shadow-none nbc-transition-shadow hover:nbc-shadow-md md:nbc-p-5`}
 		>
 			{format === 'grid' && <span className="opacity-70">{relative(created)}</span>}
-			<div className="flex flex-row justify-between mb-2">
-				<p className="font-bold text-xl leading-snug">{title}</p>
+			<div className="nbc-mb-2 nbc-flex nbc-flex-row nbc-justify-between">
+				<p className="nbc-text-xl nbc-font-bold nbc-leading-snug">{title}</p>
 				{isWinner && <p className={cx(pill, statusColors[1])}>Winner</p>}
 			</div>
-			<p className="font-normal line-clamp-2 mb-2 opacity-70">{summary}</p>
+			<p className="nbc-mb-2 nbc-font-normal nbc-opacity-70 nbc-line-clamp-2">{summary}</p>
 
-			<p className="font-normal">
+			<p className="nbc-font-normal">
 				<strong>
 					<Account address={proposer} chainId={1} />
 				</strong>
 				{format !== 'grid' && (
 					<>
-						<span className="px-2 opacity-25">•</span>{' '}
-						<span className="opacity-70">{relative(created)}</span>
+						<span className="nbc-px-2 nbc-opacity-25">•</span>{' '}
+						<span className="nbc-opacity-70">{relative(created)}</span>
 					</>
 				)}
 			</p>

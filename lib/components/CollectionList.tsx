@@ -30,7 +30,7 @@ export const CollectionList = ({ dao, opts = {} }: ComponentConfig) => {
 		<ComponentWrapper theme={theme} isDataLoaded={isDataLoaded}>
 			<div
 				id="collection"
-				className={`mx-auto grid gap-8`}
+				className={`nbc-mx-auto nbc-grid nbc-gap-8`}
 				style={{
 					gridTemplateColumns: isMdOrAbove
 						? `repeat(${itemsPerRow},minmax(0,1fr))`

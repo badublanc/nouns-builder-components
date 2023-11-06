@@ -30,15 +30,15 @@ export const PropHouseRounds = ({ opts = {} }: ComponentConfig) => {
 	return (
 		<ComponentWrapper theme={theme} isDataLoaded={roundData.length ? true : false}>
 			{!rounds && (
-				<div className="flex justify-center mx-auto">
-					<div className="h-full text-center w-full flex flex-col md:flex-row md:gap-10 items-center">
-						<p className="p-4 md:p-10 w-full">No Prop House rounds found</p>
+				<div className="nbc-mx-auto nbc-flex nbc-justify-center">
+					<div className="nbc-flex nbc-h-full nbc-w-full nbc-flex-col nbc-items-center nbc-text-center md:nbc-flex-row md:nbc-gap-10">
+						<p className="nbc-w-full nbc-p-4 md:nbc-p-10">No Prop House rounds found</p>
 					</div>
 				</div>
 			)}
 			<div
 				id="ph-rounds"
-				className={`mx-auto grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-5`}
+				className={`nbc-mx-auto nbc-grid nbc-grid-cols-1 nbc-gap-2 md:nbc-grid-cols-2 md:nbc-gap-5`}
 				style={{
 					gridTemplateColumns: isMdOrAbove
 						? `repeat(${itemsPerRow},minmax(0,1fr))`

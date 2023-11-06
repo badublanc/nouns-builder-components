@@ -11,11 +11,11 @@ type PropHouseRoundConfig = {
 const getStatusColorClasses = (status: string) => {
 	switch (status.toLowerCase()) {
 		case 'proposing':
-			return 'bg-blue-200 text-blue-500';
+			return 'nbc-bg-blue-200 nbc-text-blue-500';
 		case 'voting':
-			return 'bg-green-200 text-green-500';
+			return 'nbc-bg-green-200 nbc-text-green-500';
 		default:
-			return 'bg-gray-200 text-gray-500';
+			return 'nbc-bg-gray-200 nbc-text-gray-500';
 	}
 };
 
@@ -24,28 +24,30 @@ export const PropHouseRound = ({ round }: PropHouseRoundConfig) => {
 	const statusColor = getStatusColorClasses(status);
 
 	return (
-		<div className="h-full border border-theme-border p-3 md:p-5 rounded-lg hover:shadow-md shadow-none transition-shadow">
+		<div className="nbc-h-full nbc-rounded-lg nbc-border nbc-border-theme-border nbc-p-3 nbc-shadow-none nbc-transition-shadow hover:nbc-shadow-md md:nbc-p-5">
 			<div>
-				<div className="flex flex-row justify-between mb-3">
-					<p className="font-bold text-xl leading-snug">{name}</p>
+				<div className="nbc-mb-3 nbc-flex nbc-flex-row nbc-justify-between">
+					<p className="nbc-text-xl nbc-font-bold nbc-leading-snug">{name}</p>
 					<p className={cx(pill, statusColor)}>{status}</p>
 				</div>
-				<p className="line-clamp-3 font-normal text-xs md:text-base">{description}</p>
+				<p className="nbc-text-xs nbc-font-normal nbc-line-clamp-3 md:nbc-text-base">
+					{description}
+				</p>
 			</div>
-			<div className="flex flex-row gap-3 justify-between pt-3 md:pt-5">
+			<div className="nbc-flex nbc-flex-row nbc-justify-between nbc-gap-3 nbc-pt-3 md:nbc-pt-5">
 				<div>
 					<p className={label}>Funding</p>
-					<p className="font-bold">{`${funding.amount} ${funding.currency} ${String.fromCharCode(
-						215
-					)} ${funding.winners}`}</p>
+					<p className="nbc-font-bold">{`${funding.amount} ${
+						funding.currency
+					} ${String.fromCharCode(215)} ${funding.winners}`}</p>
 				</div>
 				<div>
 					<p className={label}>Prop deadline</p>
-					<p className="font-bold">{relative(proposalDeadline)}</p>
+					<p className="nbc-font-bold">{relative(proposalDeadline)}</p>
 				</div>
 				<div>
 					<p className={label}>Proposals</p>
-					<p className="font-bold">{proposals.length}</p>
+					<p className="nbc-font-bold">{proposals.length}</p>
 				</div>
 			</div>
 		</div>

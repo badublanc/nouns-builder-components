@@ -25,7 +25,7 @@ export const ProposalList = ({ dao, opts = {} }: ComponentConfig) => {
 
 	return (
 		<ComponentWrapper theme={theme} isDataLoaded={isDataLoaded}>
-			<div id="proposal-list" className="flex flex-col gap-6">
+			<div id="proposal-list" className="nbc-flex nbc-flex-col nbc-gap-6">
 				{proposals?.map((proposal, i) => {
 					if (maxProposals && i >= maxProposals) return null;
 					return <ProposalListItem key={proposal.id} dao={dao} proposal={proposal} />;
